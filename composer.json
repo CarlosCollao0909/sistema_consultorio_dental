@@ -1,0 +1,23 @@
+{
+    "name": "jcdev09/consultorio_dental",
+    "description": "Sistema administrativo para el consultorio PerfectDent",
+    "version": "1.0.0",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Juan Carlos Collao Mamani",
+            "email": "jccm0909@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "autoload": {
+        "psr-4": {
+            "MVC\\": "./",
+            "Models\\": "./models",
+            "Controllers\\": "./controllers"
+        }
+    },
+    "require": {
+        "vlucas/phpdotenv": "^5.6"
+    }
+}

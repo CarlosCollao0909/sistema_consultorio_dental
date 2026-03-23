@@ -1,0 +1,19 @@
+{
+  "name": "consultorio_dental",
+  "version": "1.0.0",
+  "description": "Sistema administrativo para el consultorio PerfectDent",
+  "keywords": [
+    "PHP",
+    "MySQL",
+    "MVC"
+  ],
+  "license": "ISC",
+  "author": "Juan Carlos Collao Mamani",
+  "main": "index.js",
+  "scripts": {},
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.2.2",
+    "tailwindcss": "^4.2.2",
+    "vite": "^8.0.2"
+  }
+}
