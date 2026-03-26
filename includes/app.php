@@ -11,4 +11,6 @@ $dotenv->safeLoad();
 require 'functions.php';
 require 'db.php';
 
+$db = connectDB();
+
 Database::setDB($db);

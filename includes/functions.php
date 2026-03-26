@@ -1,6 +1,6 @@
 <?php
 
-define('PDF_FOLDER', $_SERVER['DOCUMENT_ROOT'] . '/PDFs/');
+define('PDF_FOLDER', $_SERVER['DOCUMENT_ROOT'] . './../storage/PDFs/');
 
 function debug($variable) {
     echo '<pre>';

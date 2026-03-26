@@ -49,7 +49,7 @@ class Router {
         } else if (str_contains($currentUrl, '/error')) {
             include_once __DIR__ . 'views/layouts/error.php';
         } else {
-            include_once __DIR__ . 'views/layouts/login.php';
+            include_once __DIR__ . 'views/layouts/account.php';
         }
     }
 }
