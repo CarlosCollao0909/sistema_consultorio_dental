@@ -28,7 +28,7 @@ class UserController {
                         if ($user->role === '1') {
                             $_SESSION['admin'] = true;
                         }
-                        debug($_SESSION);
+                        
                         header('Location: /admin/dashboard');
                     }
                 } else {
