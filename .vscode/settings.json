@@ -1,0 +1,8 @@
+{
+    "tailwindCSS.includeLanguages": {
+        "php": "html"
+    },
+    "files.associations": {
+        "*.css": "tailwindcss"
+    }
+}

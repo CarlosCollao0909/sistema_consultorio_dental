@@ -47,9 +47,9 @@ class Router {
         if(str_contains($currentUrl, '/admin')) {
             include_once __DIR__ . '/views/layouts/admin.php';
         } else if (str_contains($currentUrl, '/error')) {
-            include_once __DIR__ . 'views/layouts/error.php';
+            include_once __DIR__ . '/views/layouts/error.php';
         } else {
-            include_once __DIR__ . 'views/layouts/account.php';
+            include_once __DIR__ . '/views/layouts/account.php';
         }
     }
 }
