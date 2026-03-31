@@ -4,6 +4,8 @@ namespace Models;
 
 use stdClass;
 
+/** @property int $id */
+
 class Database {
     protected static $db;
     protected static $table;
@@ -31,11 +33,11 @@ class Database {
         $result = self::$db->query($query);
         $objectsArray = [];
         while ($row = $result->fetch_assoc()) {
-            $objetc = $model ? new static : new stdClass;
+            $object = $model ? new static : new stdClass;
             foreach ($row as $key => $value) {
-                $objetc->$key = $value;
+                $object->$key = $value;
             }
-            $objectsArray[] = $objetc;
+            $objectsArray[] = $object;
         }
 
         $result->free();
@@ -45,7 +47,7 @@ class Database {
 
     public static function querySQL($query) {
         $result = self::$db->query($query);
-        
+
         $array = [];
         while ($row = $result->fetch_assoc()) {
             $array[] = static::createObject($row);
@@ -72,7 +74,8 @@ class Database {
         $attributes = [];
 
         foreach (static::$columns as $column) {
-            if ($column === 'id') continue;
+            if ($column === 'id')
+                continue;
             $attributes[$column] = $this->$column;
         }
 

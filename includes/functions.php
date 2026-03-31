@@ -21,12 +21,12 @@ function isStartedSession() {
 }
 
 function isAuth() {
-    if(!isset($_SESSION['login'])) {
+    if (!isset($_SESSION['login'])) {
         header('Location: /');
     }
 }
 
-function vaalidateRedirect($variable, $url) {
+function validateRedirect($variable, $url) {
     if (!$variable) {
         header("Location: $url");
     }

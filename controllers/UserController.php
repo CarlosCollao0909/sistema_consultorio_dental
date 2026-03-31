@@ -14,10 +14,11 @@ class UserController {
             $alerts = $auth->validateLogin();
 
             if (empty($alerts)) {
+                /** @var User $user */
                 $user = User::where('username', $auth->username);
-                
+
                 if ($user) {
-                    
+
                     if ($user->verifyPassword($auth->password)) {
                         isStartedSession();
                         $_SESSION['id'] = $user->id;
@@ -28,7 +29,7 @@ class UserController {
                         if ($user->role === '1') {
                             $_SESSION['admin'] = true;
                         }
-                        
+
                         header('Location: /admin/dashboard');
                     }
                 } else {
@@ -58,11 +59,11 @@ class UserController {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $user->synchronize($_POST);
             $alerts = $user->validateAccount();
-            
+
             if (empty($alerts)) {
                 $user->hashPassword();
                 $result = $user->create();
-                
+
                 if ($result) {
                     header('Location: /message');
                 }
