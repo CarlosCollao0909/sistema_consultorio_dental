@@ -35,3 +35,10 @@ function validateRedirect($variable, $url) {
 function currentPage($path) {
     return str_contains($_SERVER['PATH_INFO'], $path) ? true : false;
 }
+
+function calculateAge($birthDate) {
+    $birthDate = new DateTime($birthDate);
+    $currentDate = new DateTime();
+    $age = $currentDate->diff($birthDate)->y;
+    return $age;
+}
