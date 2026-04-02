@@ -15,6 +15,21 @@ const ALERTS_CONFIG = {
         icon: 'success',
         title: 'Paciente Eliminado',
         message: 'El paciente fue eliminado exitosamente.'
+    },
+    specialty_created: {
+        icon: 'success',
+        title: 'Especialidad Registrada',
+        message: 'La especialidad fue creada exitosamente.'
+    },
+    specialty_updated: {
+        icon: 'success',
+        title: 'Especialidad Actualizada',
+        message: 'Los datos de la especialidad fueron actualizados exitosamente.'
+    },
+    specialty_deleted: {
+        icon: 'success',
+        title: 'Especialidad Eliminada',
+        message: 'La especialidad fue eliminada exitosamente.'
     }
 };
 

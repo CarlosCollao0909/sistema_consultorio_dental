@@ -36,5 +36,10 @@ $router->get('/admin/payments', [PaymentController::class, 'index']);
 $router->get('/admin/treatments', [TreatmentController::class, 'index']);
 
 $router->get('/admin/specialties', [SpecialtyController::class, 'index']);
+$router->get('/admin/specialties/create', [SpecialtyController::class, 'create']);
+$router->post('/admin/specialties/create', [SpecialtyController::class, 'create']);
+$router->get('/admin/specialties/update', [SpecialtyController::class, 'update']);
+$router->post('/admin/specialties/update', [SpecialtyController::class, 'update']);
+$router->post('/admin/specialties/delete', [SpecialtyController::class, 'delete']);
 
 $router->checkRoutes();
