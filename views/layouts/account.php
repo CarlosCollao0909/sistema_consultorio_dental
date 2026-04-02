@@ -7,8 +7,10 @@
     <title>Consultorio Dental PerfectDent - Login</title>
 </head>
 <body>
-    <div class="flex flex-col items-center justify-center min-h-screen bg-gray-50">
-        <?php echo $content; ?>
+    <div class="flex min-h-screen items-center justify-center bg-linear-to-b from-slate-100 via-slate-50 to-white px-4 py-10">
+        <div class="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 shadow-lg md:p-8">
+            <?php echo $content; ?>
+        </div>
     </div>
 </body>
 </html>

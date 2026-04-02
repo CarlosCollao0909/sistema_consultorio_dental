@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
@@ -9,38 +9,55 @@
 </head>
 
 <body>
-    <div class="flex h-screen bg-gray-100">
+    <?php
+    $fullName = $_SESSION['name'] ?? '';
+    $firstName = $fullName ? explode(' ', trim($fullName))[0] : 'Usuario';
+    ?>
+
+    <div class="flex min-h-screen bg-slate-100">
         <!-- Sidebar -->
-        <aside class="w-64 bg-gray-900 text-white shadow-lg">
-            <div class="p-6 border-b border-gray-700">
-                <h1 class="text-2xl font-bold">PerfectDent</h1>
+        <aside class="w-72 border-r border-slate-800 bg-slate-900 text-white shadow-lg">
+            <div class="border-b border-slate-800 p-6">
+                <h1 class="inline-flex items-center gap-2 text-2xl font-bold tracking-tight">
+                    <i class="fa-solid fa-tooth"></i>
+                    PerfectDent
+                </h1>
+                <p class="mt-1 text-sm text-slate-300">Consultorio Odontológico</p>
             </div>
-            <nav class="mt-6">
+            <nav class="mt-4 space-y-1 px-3">
                 <a href="/admin/dashboard"
-                    class="block px-6 py-3 hover:bg-gray-800 transition <?php echo currentPage('/dashboard') ? 'bg-gray-800' : ''; ?>">Dashboard</a>
+                    class="inline-flex w-full items-center gap-2 rounded-lg px-4 py-2.5 text-white transition hover:bg-slate-800 hover:text-white <?php echo currentPage('/dashboard') ? 'bg-blue-700/70 shadow-sm' : ''; ?>"><i class="fa-solid fa-chart-line w-4"></i>Dashboard</a>
                 <a href="/admin/patients"
-                    class="block px-6 py-3 hover:bg-gray-800 transition <?php echo currentPage('/patients') ? 'bg-gray-800' : ''; ?>">Pacientes</a>
+                    class="inline-flex w-full items-center gap-2 rounded-lg px-4 py-2.5 text-white transition hover:bg-slate-800 hover:text-white <?php echo currentPage('/patients') ? 'bg-blue-700/70 shadow-sm' : ''; ?>"><i class="fa-solid fa-user-group w-4"></i>Pacientes</a>
                 <a href="/admin/appointments"
-                    class="block px-6 py-3 hover:bg-gray-800 transition <?php echo currentPage('/appointments') ? 'bg-gray-800' : ''; ?>">Citas</a>
+                    class="inline-flex w-full items-center gap-2 rounded-lg px-4 py-2.5 text-white transition hover:bg-slate-800 hover:text-white <?php echo currentPage('/appointments') ? 'bg-blue-700/70 shadow-sm' : ''; ?>"><i class="fa-solid fa-calendar-check w-4"></i>Citas</a>
                 <a href="/admin/specialties"
-                    class="block px-6 py-3 hover:bg-gray-800 transition <?php echo currentPage('/specialties') ? 'bg-gray-800' : ''; ?>">Especialidades</a>
+                    class="inline-flex w-full items-center gap-2 rounded-lg px-4 py-2.5 text-white transition hover:bg-slate-800 hover:text-white <?php echo currentPage('/specialties') ? 'bg-blue-700/70 shadow-sm' : ''; ?>"><i class="fa-solid fa-stethoscope w-4"></i>Especialidades</a>
                 <a href="/admin/treatments"
-                    class="block px-6 py-3 hover:bg-gray-800 transition <?php echo currentPage('/treatments') ? 'bg-gray-800' : ''; ?>">Tratamientos</a>
+                    class="inline-flex w-full items-center gap-2 rounded-lg px-4 py-2.5 text-white transition hover:bg-slate-800 hover:text-white <?php echo currentPage('/treatments') ? 'bg-blue-700/70 shadow-sm' : ''; ?>"><i class="fa-solid fa-syringe w-4"></i>Tratamientos</a>
                 <a href="/admin/payments"
-                    class="block px-6 py-3 hover:bg-gray-800 transition <?php echo currentPage('/payments') ? 'bg-gray-800' : ''; ?>">Configuración</a>
+                    class="inline-flex w-full items-center gap-2 rounded-lg px-4 py-2.5 text-white transition hover:bg-slate-800 hover:text-white <?php echo currentPage('/payments') ? 'bg-blue-700/70 shadow-sm' : ''; ?>"><i class="fa-solid fa-credit-card w-4"></i>Pagos</a>
             </nav>
         </aside>
 
         <!-- Main Content -->
-        <div class="flex-1 flex flex-col">
+        <div class="flex flex-1 flex-col">
             <!-- Header -->
-            <header class="bg-white shadow">
-                <div class="px-8 py-4 flex justify-between items-center">
-                    <h2 class="text-xl font-semibold text-gray-800">Panel de Administración</h2>
-                    <div class="group flex flex-col items-center gap-2.5 text-lg/2 hover:cursor-pointer">
-                        <i class="fa-solid fa-right-from-bracket text-gray-600 group-hover:text-red-500"></i>
-                        <a href="/logout" class="text-gray-600 group-hover:text-red-500">Cerrar sesión</a>
+            <header class="border-b border-white bg-white/90 shadow-sm backdrop-blur">
+                <div class="flex items-center justify-between px-8 py-4">
+                    <div class="inline-flex items-center gap-3">
+                        <div class="flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 text-slate-400">
+                            <i class="fa-regular fa-heart"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-xl font-semibold tracking-tight text-slate-800">Hola, <?php echo sanitizeHTML($firstName); ?></h2>
+                            <p class="text-sm text-slate-500">Bienvenido al sistema</p>
+                        </div>
                     </div>
+                    <a href="/logout" class="inline-flex items-center gap-2 rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 font-medium text-rose-700 transition hover:bg-rose-100">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        Cerrar sesión
+                    </a>
                 </div>
             </header>
 
