@@ -50,6 +50,7 @@
             </main>
         </div>
     </div>
+    <script src="/build/js/admin.js"></script>
 </body>
 
 </html>

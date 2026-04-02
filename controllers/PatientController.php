@@ -15,12 +15,14 @@ class PatientController {
         ]);
     }
 
-    public static function create() {
+    public static function create(Router $router) {
         isStartedSession();
         isAuth();
 
+        $alerts = [];
+        $patient = new Patient;
+        
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $patient = new Patient;
             $patient->synchronize($_POST);
             $alerts = $patient->validate();
 
@@ -32,13 +34,15 @@ class PatientController {
                     exit;
                 }
             }
-
-            header('Location: /admin/patients?patient_created=0');
-            exit;
         }
+
+        $router->render('admin/patients/create', [
+            'alerts' => $alerts,
+            'patient' => $patient
+        ]);
     }
 
-    public static function update() {
+    public static function update(Router $router) {
         isStartedSession();
         isAuth();
 
@@ -46,10 +50,12 @@ class PatientController {
         $id = filter_var($id, FILTER_VALIDATE_INT);
         validateRedirect($id, '/admin/patients');
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $patient = Patient::find($id);
-            validateRedirect($patient, '/admin/patients');
+        $patient = Patient::find($id);
+        validateRedirect($patient, '/admin/patients');
 
+        $alerts = [];
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $patient->synchronize($_POST);
             $alerts = $patient->validate();
 
@@ -61,10 +67,12 @@ class PatientController {
                     exit;
                 }
             }
-
-            header('Location: /admin/patients?patient_updated=0');
-            exit;
         }
+
+        $router->render('admin/patients/update', [
+            'alerts' => $alerts,
+            'patient' => $patient
+        ]);
     }
 
     public static function delete() {
@@ -73,9 +81,13 @@ class PatientController {
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = $_POST['id'] ?? '';
+            $id = filter_var($id, FILTER_VALIDATE_INT);
+            validateRedirect($id, '/admin/patients');
 
             /** @var Patient $patient */
             $patient = Patient::find($id);
+            validateRedirect($patient, '/admin/patients');
+            
             $patient->status = '0';
             $result = $patient->update();
 
@@ -84,8 +96,5 @@ class PatientController {
                 exit;
             }
         }
-
-        header('Location: /admin/patients?patient_deleted=0');
-        exit;
     }
 }

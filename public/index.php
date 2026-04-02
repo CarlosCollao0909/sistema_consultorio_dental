@@ -23,7 +23,9 @@ $router->get('/message', [UserController::class, 'showMessage']);
 $router->get('/admin/dashboard', [DashboardController::class, 'index']);
 
 $router->get('/admin/patients', [PatientController::class, 'index']);
+$router->get('/admin/patients/create', [PatientController::class, 'create']);
 $router->post('/admin/patients/create', [PatientController::class, 'create']);
+$router->get('/admin/patients/update', [PatientController::class, 'update']);
 $router->post('/admin/patients/update', [PatientController::class, 'update']);
 $router->post('/admin/patients/delete', [PatientController::class, 'delete']);
 
