@@ -8,8 +8,6 @@ use Models\Treatment;
 use Models\Appointment;
 use Models\Payment;
 use Models\Attachment;
-use Models\User;
-use Models\Specialty;
 
 class PatientController {
     public static function index(Router $router) {
@@ -129,16 +127,10 @@ class PatientController {
         // Load attachments
         $attachments = Attachment::findByPatient($id);
 
-        // Load doctors and active specialties for modal selects
-        $doctors = User::all();
-        $specialties = Specialty::where('status', '1', true);
-
         $router->render('admin/patients/profile', [
             'patient' => $patient,
             'treatments' => $treatments,
-            'attachments' => $attachments,
-            'doctors' => $doctors,
-            'specialties' => $specialties
+            'attachments' => $attachments
         ]);
     }
 }

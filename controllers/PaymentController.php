@@ -13,36 +13,50 @@ class PaymentController {
         $router->render('admin/payments/index');
     }
 
-    public static function create() {
+    public static function create(Router $router) {
         isStartedSession();
         isAuth();
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $patientId = filter_var($_POST['patient_id'] ?? '', FILTER_VALIDATE_INT);
-            validateRedirect($patientId, '/admin/patients');
+        $patientId = filter_var($_GET['patient_id'] ?? $_POST['patient_id'] ?? '', FILTER_VALIDATE_INT);
+        validateRedirect($patientId, '/admin/patients');
 
-            $payment = new Payment($_POST);
+        $treatmentId = filter_var($_GET['treatment_id'] ?? $_POST['treatment_id'] ?? '', FILTER_VALIDATE_INT);
+        validateRedirect($treatmentId, "/admin/patients/profile?id=$patientId");
+
+        /** @var Treatment $treatment */
+        $treatment = Treatment::find($treatmentId);
+        validateRedirect($treatment, "/admin/patients/profile?id=$patientId");
+
+        $balance = Treatment::getBalance($treatmentId);
+        $alerts = [];
+        $payment = new Payment(['treatment_id' => $treatmentId]);
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $payment->synchronize($_POST);
             $alerts = $payment->validate();
 
             if (empty($alerts)) {
-                // Validate payment doesn't exceed balance
-                $balance = Treatment::getBalance($payment->treatment_id);
                 if ((float)$payment->amount_paid > $balance) {
-                    header("Location: /admin/patients/profile?id=$patientId");
-                    exit;
-                }
-
-                $payment->payment_date = date('Y-m-d H:i:s');
-                $result = $payment->create();
-                if ($result) {
-                    header("Location: /admin/patients/profile?id=$patientId&payment_created=1");
-                    exit;
+                    Payment::setAlert('error', 'El monto excede el balance pendiente ($' . number_format($balance, 2) . ')');
+                    $alerts = Payment::getAlerts();
+                } else {
+                    $payment->payment_date = date('Y-m-d H:i:s');
+                    $result = $payment->create();
+                    if ($result) {
+                        header("Location: /admin/patients/profile?id=$patientId&payment_created=1");
+                        exit;
+                    }
                 }
             }
-
-            header("Location: /admin/patients/profile?id=$patientId");
-            exit;
         }
+
+        $router->render('admin/payments/create', [
+            'alerts' => $alerts,
+            'payment' => $payment,
+            'treatment' => $treatment,
+            'balance' => $balance,
+            'patientId' => $patientId
+        ]);
     }
 
     public static function delete() {

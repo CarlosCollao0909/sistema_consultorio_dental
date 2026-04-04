@@ -4,6 +4,8 @@ namespace Controllers;
 
 use MVC\Router;
 use Models\Treatment;
+use Models\User;
+use Models\Specialty;
 
 class TreatmentController {
     public static function index(Router $router) {
@@ -12,15 +14,20 @@ class TreatmentController {
         $router->render('admin/treatments/index');
     }
 
-    public static function create() {
+    public static function create(Router $router) {
         isStartedSession();
         isAuth();
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $patientId = filter_var($_POST['patient_id'] ?? '', FILTER_VALIDATE_INT);
-            validateRedirect($patientId, '/admin/patients');
+        $patientId = filter_var($_GET['patient_id'] ?? $_POST['patient_id'] ?? '', FILTER_VALIDATE_INT);
+        validateRedirect($patientId, '/admin/patients');
 
-            $treatment = new Treatment($_POST);
+        $alerts = [];
+        $treatment = new Treatment(['patient_id' => $patientId]);
+        $doctors = User::all();
+        $specialties = Specialty::where('status', '1', true);
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $treatment->synchronize($_POST);
             $alerts = $treatment->validate();
 
             if (empty($alerts)) {
@@ -30,26 +37,34 @@ class TreatmentController {
                     exit;
                 }
             }
-
-            header("Location: /admin/patients/profile?id=$patientId");
-            exit;
         }
+
+        $router->render('admin/treatments/create', [
+            'alerts' => $alerts,
+            'treatment' => $treatment,
+            'doctors' => $doctors,
+            'specialties' => $specialties,
+            'patientId' => $patientId
+        ]);
     }
 
-    public static function update() {
+    public static function update(Router $router) {
         isStartedSession();
         isAuth();
 
+        $id = filter_var($_GET['id'] ?? '', FILTER_VALIDATE_INT);
+        validateRedirect($id, '/admin/patients');
+
+        /** @var Treatment $treatment */
+        $treatment = Treatment::find($id);
+        validateRedirect($treatment, '/admin/patients');
+
+        $patientId = $treatment->patient_id;
+        $alerts = [];
+        $doctors = User::all();
+        $specialties = Specialty::where('status', '1', true);
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $patientId = filter_var($_POST['patient_id'] ?? '', FILTER_VALIDATE_INT);
-            validateRedirect($patientId, '/admin/patients');
-
-            $id = filter_var($_POST['id'] ?? '', FILTER_VALIDATE_INT);
-            validateRedirect($id, "/admin/patients/profile?id=$patientId");
-
-            $treatment = Treatment::find($id);
-            validateRedirect($treatment, "/admin/patients/profile?id=$patientId");
-
             $treatment->synchronize($_POST);
             $alerts = $treatment->validate();
 
@@ -60,10 +75,15 @@ class TreatmentController {
                     exit;
                 }
             }
-
-            header("Location: /admin/patients/profile?id=$patientId");
-            exit;
         }
+
+        $router->render('admin/treatments/update', [
+            'alerts' => $alerts,
+            'treatment' => $treatment,
+            'doctors' => $doctors,
+            'specialties' => $specialties,
+            'patientId' => $patientId
+        ]);
     }
 
     public static function delete() {
