@@ -97,4 +97,20 @@ class PatientController {
             }
         }
     }
+
+    public static function showProfile(Router $router) {
+        isStartedSession();
+        isAuth();
+
+        $id = $_GET['id'] ?? '';
+        $id = filter_var($id, FILTER_VALIDATE_INT);
+        validateRedirect($id, '/admin/patients');
+
+        $patient = Patient::findActive($id);
+        validateRedirect($patient, '/admin/patients');
+
+        $router->render('admin/patients/profile', [
+            'patient' => $patient
+        ]);
+    }
 }

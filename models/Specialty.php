@@ -27,4 +27,11 @@ class Specialty extends Database {
         }
         return self::$alerts;
     }
+
+    public static function findActive($id) {
+        $query = "SELECT * FROM " . static::$table . " WHERE status = '1' AND id = ?";
+        $result = self::preparedQuery($query, 'i', $id);
+        // debug($result);
+        return array_shift($result);
+    }
 }

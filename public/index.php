@@ -28,6 +28,7 @@ $router->post('/admin/patients/create', [PatientController::class, 'create']);
 $router->get('/admin/patients/update', [PatientController::class, 'update']);
 $router->post('/admin/patients/update', [PatientController::class, 'update']);
 $router->post('/admin/patients/delete', [PatientController::class, 'delete']);
+$router->get('/admin/patients/profile', [PatientController::class, 'showProfile']);
 
 $router->get('/admin/appointments', [AppointmentController::class, 'index']);
 

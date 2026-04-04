@@ -49,7 +49,8 @@ class Database {
         }
 
         $result->free();
-        if (isset($stmt)) $stmt->close();
+        if (isset($stmt))
+            $stmt->close();
 
         return $objectsArray;
     }
@@ -113,8 +114,10 @@ class Database {
     }
 
     protected static function getParamType($value): string {
-        if (is_int($value)) return 'i';
-        if (is_float($value)) return 'd';
+        if (is_int($value))
+            return 'i';
+        if (is_float($value))
+            return 'd';
         return 's';
     }
 
@@ -138,8 +141,33 @@ class Database {
         return array_shift($result);
     }
 
-    public static function where($column, $value, $all = false) {
+    public static function where($column, $value = null, $all = false) {
         $allowed = static::$columns;
+
+        // Modo array: where(['status' => '1', 'name' => 'Juan'])
+        if (is_array($column)) {
+            $filters = $column;
+            $all = $value ?? false; // segundo parámetro pasa a ser $all
+
+            $clauses = [];
+            $types = '';
+            $values = [];
+
+            foreach ($filters as $col => $val) {
+                if (!in_array($col, $allowed)) {
+                    throw new \InvalidArgumentException("Columna no permitida: $col");
+                }
+                $clauses[] = "$col = ?";
+                $types .= self::getParamType($val);
+                $values[] = $val;
+            }
+
+            $query = "SELECT * FROM " . static::$table . " WHERE " . join(' AND ', $clauses);
+            $result = self::preparedQuery($query, $types, ...$values);
+            return $all ? $result : array_shift($result);
+        }
+
+        // Modo simple: where('username', 'admin')
         if (!in_array($column, $allowed)) {
             throw new \InvalidArgumentException("Columna no permitida: $column");
         }

@@ -48,6 +48,10 @@
                                     <i class="fa-solid fa-pen"></i>
                                     Editar
                                 </a>
+                                <a href="/admin/patients/profile?id=<?php echo $patient->id; ?>" class="inline-flex items-center gap-2 rounded-md bg-green-100 px-3 py-1.5 font-medium text-green-800 transition hover:bg-green-200">
+                                    <i class="fa-solid fa-eye"></i>
+                                    Ver Perfil
+                                </a>
                                 <form method="POST" action="/admin/patients/delete" class="delete-form inline">
                                     <input type="hidden" name="id" value="<?php echo $patient->id; ?>">
                                     <button type="submit" class="inline-flex cursor-pointer items-center gap-2 rounded-md bg-rose-100 px-3 py-1.5 font-medium text-rose-700 transition hover:bg-rose-200">

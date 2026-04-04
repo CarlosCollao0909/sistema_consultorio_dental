@@ -33,10 +33,6 @@
                     class="inline-flex w-full items-center gap-2 rounded-lg px-4 py-2.5 text-white transition hover:bg-slate-800 hover:text-white <?php echo currentPage('/appointments') ? 'bg-blue-700/70 shadow-sm' : ''; ?>"><i class="fa-solid fa-calendar-check w-4"></i>Citas</a>
                 <a href="/admin/specialties"
                     class="inline-flex w-full items-center gap-2 rounded-lg px-4 py-2.5 text-white transition hover:bg-slate-800 hover:text-white <?php echo currentPage('/specialties') ? 'bg-blue-700/70 shadow-sm' : ''; ?>"><i class="fa-solid fa-stethoscope w-4"></i>Especialidades</a>
-                <a href="/admin/treatments"
-                    class="inline-flex w-full items-center gap-2 rounded-lg px-4 py-2.5 text-white transition hover:bg-slate-800 hover:text-white <?php echo currentPage('/treatments') ? 'bg-blue-700/70 shadow-sm' : ''; ?>"><i class="fa-solid fa-syringe w-4"></i>Tratamientos</a>
-                <a href="/admin/payments"
-                    class="inline-flex w-full items-center gap-2 rounded-lg px-4 py-2.5 text-white transition hover:bg-slate-800 hover:text-white <?php echo currentPage('/payments') ? 'bg-blue-700/70 shadow-sm' : ''; ?>"><i class="fa-solid fa-credit-card w-4"></i>Pagos</a>
             </nav>
         </aside>
 
