@@ -10,6 +10,7 @@ use Controllers\AppointmentController;
 use Controllers\PaymentController;
 use Controllers\TreatmentController;
 use Controllers\SpecialtyController;
+use Controllers\AttachmentController;
 
 $router = new Router();
 
@@ -29,6 +30,25 @@ $router->get('/admin/patients/update', [PatientController::class, 'update']);
 $router->post('/admin/patients/update', [PatientController::class, 'update']);
 $router->post('/admin/patients/delete', [PatientController::class, 'delete']);
 $router->get('/admin/patients/profile', [PatientController::class, 'showProfile']);
+
+// Treatments (profile actions)
+$router->post('/admin/patients/profile/treatment-create', [TreatmentController::class, 'create']);
+$router->post('/admin/patients/profile/treatment-update', [TreatmentController::class, 'update']);
+$router->post('/admin/patients/profile/treatment-delete', [TreatmentController::class, 'delete']);
+
+// Appointments (profile actions)
+$router->post('/admin/patients/profile/appointment-create', [AppointmentController::class, 'create']);
+$router->post('/admin/patients/profile/appointment-update', [AppointmentController::class, 'update']);
+$router->post('/admin/patients/profile/appointment-delete', [AppointmentController::class, 'delete']);
+
+// Payments (profile actions)
+$router->post('/admin/patients/profile/payment-create', [PaymentController::class, 'create']);
+$router->post('/admin/patients/profile/payment-delete', [PaymentController::class, 'delete']);
+
+// Attachments (profile actions)
+$router->post('/admin/patients/profile/attachment-upload', [AttachmentController::class, 'upload']);
+$router->post('/admin/patients/profile/attachment-delete', [AttachmentController::class, 'delete']);
+$router->get('/admin/patients/profile/attachment-download', [AttachmentController::class, 'download']);
 
 $router->get('/admin/appointments', [AppointmentController::class, 'index']);
 

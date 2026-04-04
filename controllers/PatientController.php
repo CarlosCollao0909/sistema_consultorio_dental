@@ -4,6 +4,12 @@ namespace Controllers;
 
 use MVC\Router;
 use Models\Patient;
+use Models\Treatment;
+use Models\Appointment;
+use Models\Payment;
+use Models\Attachment;
+use Models\User;
+use Models\Specialty;
 
 class PatientController {
     public static function index(Router $router) {
@@ -109,8 +115,30 @@ class PatientController {
         $patient = Patient::findActive($id);
         validateRedirect($patient, '/admin/patients');
 
+        // Load treatments with doctor and specialty names
+        $treatments = Treatment::findByPatient($id);
+
+        // For each treatment, load appointments, payments and calculate balance
+        foreach ($treatments as $treatment) {
+            $treatment->appointments = Appointment::findByTreatment($treatment->id);
+            $treatment->payments = Payment::findByTreatment($treatment->id);
+            $treatment->total_paid = Payment::totalPaidByTreatment($treatment->id);
+            $treatment->balance = (float)$treatment->total_cost - $treatment->total_paid;
+        }
+
+        // Load attachments
+        $attachments = Attachment::findByPatient($id);
+
+        // Load doctors and active specialties for modal selects
+        $doctors = User::all();
+        $specialties = Specialty::where('status', '1', true);
+
         $router->render('admin/patients/profile', [
-            'patient' => $patient
+            'patient' => $patient,
+            'treatments' => $treatments,
+            'attachments' => $attachments,
+            'doctors' => $doctors,
+            'specialties' => $specialties
         ]);
     }
 }
