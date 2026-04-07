@@ -104,13 +104,13 @@ $appointmentStatusLabels = [
                         <!-- Cost / Balance Summary -->
                         <div class="mt-3 flex flex-wrap gap-4 text-sm">
                             <span class="rounded-md bg-slate-100 px-3 py-1 font-medium text-slate-700">
-                                Costo: $<?php echo number_format($treatment->total_cost, 2); ?>
+                                Costo: Bs. <?php echo number_format($treatment->total_cost, 2); ?>
                             </span>
                             <span class="rounded-md bg-emerald-50 px-3 py-1 font-medium text-emerald-700">
-                                Pagado: $<?php echo number_format($treatment->total_paid, 2); ?>
+                                Pagado: Bs. <?php echo number_format($treatment->total_paid, 2); ?>
                             </span>
                             <span class="rounded-md <?php echo $treatment->balance > 0 ? 'bg-rose-50 text-rose-700' : 'bg-emerald-50 text-emerald-700'; ?> px-3 py-1 font-medium">
-                                Pendiente: $<?php echo number_format($treatment->balance, 2); ?>
+                                Pendiente: Bs. <?php echo number_format($treatment->balance, 2); ?>
                             </span>
                         </div>
                     </div>
@@ -193,8 +193,8 @@ $appointmentStatusLabels = [
                                 <?php foreach ($treatment->payments as $payment): ?>
                                     <div class="flex flex-wrap items-center justify-between gap-2 rounded-lg bg-slate-50 px-4 py-2.5 text-sm">
                                         <div class="flex items-center gap-3">
-                                            <span class="font-semibold text-emerald-700">$<?php echo number_format($payment->amount_paid, 2); ?></span>
-                                            <span class="text-slate-600"><?php echo $payment->payment_date; ?></span>
+                                            <span class="font-semibold text-emerald-700">Bs. <?php echo number_format($payment->amount_paid, 2); ?></span>
+                                            <span class="text-slate-600"><?php echo formatTimestamp($payment->payment_date); ?></span>
                                         </div>
                                             <form method="POST" action="/admin/payments/delete" class="delete-form inline">
                                             <input type="hidden" name="id" value="<?php echo $payment->id; ?>">

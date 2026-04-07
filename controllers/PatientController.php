@@ -13,7 +13,7 @@ class PatientController {
     public static function index(Router $router) {
         isStartedSession();
         isAuth();
-        $patients = Patient::where('status', '1', true);
+        $patients = Patient::where(['status' => '1', 'user_id' => $_SESSION['id']], true);
         $router->render('admin/patients/index', [
             'patients' => $patients
         ]);
@@ -24,7 +24,7 @@ class PatientController {
         isAuth();
 
         $alerts = [];
-        $patient = new Patient;
+        $patient = new Patient(['user_id' => $_SESSION['id']]);
         
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $patient->synchronize($_POST);
@@ -110,7 +110,7 @@ class PatientController {
         $id = filter_var($id, FILTER_VALIDATE_INT);
         validateRedirect($id, '/admin/patients');
 
-        $patient = Patient::findActive($id);
+        $patient = Patient::where(['id' => $id, 'user_id' => $_SESSION['id'], 'status' => '1']);
         validateRedirect($patient, '/admin/patients');
 
         // Load treatments with doctor and specialty names

@@ -22,8 +22,7 @@ class TreatmentController {
         validateRedirect($patientId, '/admin/patients');
 
         $alerts = [];
-        $treatment = new Treatment(['patient_id' => $patientId]);
-        $doctors = User::all();
+        $treatment = new Treatment(['patient_id' => $patientId, 'user_id' => $_SESSION['id']]);
         $specialties = Specialty::where('status', '1', true);
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -42,7 +41,6 @@ class TreatmentController {
         $router->render('admin/treatments/create', [
             'alerts' => $alerts,
             'treatment' => $treatment,
-            'doctors' => $doctors,
             'specialties' => $specialties,
             'patientId' => $patientId
         ]);
@@ -52,11 +50,11 @@ class TreatmentController {
         isStartedSession();
         isAuth();
 
-        $id = filter_var($_GET['id'] ?? '', FILTER_VALIDATE_INT);
-        validateRedirect($id, '/admin/patients');
+        $treatmentId = filter_var($_GET['id'] ?? '', FILTER_VALIDATE_INT);
+        validateRedirect($treatmentId, '/admin/patients');
 
         /** @var Treatment $treatment */
-        $treatment = Treatment::find($id);
+        $treatment = Treatment::find($treatmentId);
         validateRedirect($treatment, '/admin/patients');
 
         $patientId = $treatment->patient_id;

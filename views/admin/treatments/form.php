@@ -15,19 +15,15 @@
         </div>
 
         <div class="space-y-2">
-            <label for="user_id" class="block text-sm font-medium text-slate-700">Doctor</label>
-            <select
-                name="user_id"
-                id="user_id"
-                class="w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-slate-800 shadow-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+            <label for="user" class="block text-sm font-medium text-slate-700">Doctor</label>
+            <input
+                name="user"
+                id="user" 
+                type="text"
+                value="<?php echo sanitizeHTML($_SESSION['name']); ?>" 
+                disabled 
+                class="w-full rounded-lg border border-slate-300 bg-gray-100 px-4 py-2.5 text-slate-800 shadow-sm outline-none hover:cursor-not-allowed"
             >
-                <option value="">Seleccionar doctor...</option>
-                <?php foreach ($doctors as $doctor): ?>
-                    <option value="<?php echo $doctor->id; ?>" <?php echo $treatment->user_id == $doctor->id ? 'selected' : ''; ?>>
-                        <?php echo sanitizeHTML($doctor->name . ' ' . $doctor->last_name); ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
         </div>
 
         <div class="space-y-2">

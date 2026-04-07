@@ -14,9 +14,15 @@ class Treatment extends Database {
     public $total_cost;
     public $status;
 
-    // Populated via JOIN (not in $columns, excluded from create/update)
+    // Loaded via JOIN (not in $columns, excluded from create/update)
     public $doctor_name;
     public $specialty_name;
+
+    // Loaded via Controller for profile view
+    public $appointments = [];
+    public $payments = [];
+    public $total_paid = 0;
+    public $balance = 0.0;
 
     public function __construct($args = []) {
         $this->id = $args['id'] ?? null;

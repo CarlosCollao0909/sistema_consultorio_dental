@@ -4,9 +4,10 @@ namespace Models;
 
 class Patient extends Database {
     protected static $table = 'patients';
-    protected static $columns = ['id', 'name', 'last_name', 'phone', 'birth_date', 'medical_notes', 'allergies', 'status'];
+    protected static $columns = ['id', 'user_id', 'name', 'last_name', 'phone', 'birth_date', 'medical_notes', 'allergies', 'status'];
 
     public $id;
+    public $user_id;
     public $name;
     public $last_name;
     public $phone;
@@ -17,6 +18,7 @@ class Patient extends Database {
 
     public function __construct($args = []) {
         $this->id = $args['id'] ?? null;
+        $this->user_id = $args['user_id'] ?? '';
         $this->name = $args['name'] ?? '';
         $this->last_name = $args['last_name'] ?? '';
         $this->phone = $args['phone'] ?? '';
@@ -40,12 +42,5 @@ class Patient extends Database {
             self::$alerts['error'][] = 'La fecha de nacimiento es obligatoria';
         }
         return self::$alerts;
-    }
-
-    public static function findActive($id) {
-        $query = "SELECT * FROM " . static::$table . " WHERE status = '1' AND id = ?";
-        $result = self::preparedQuery($query, 'i', $id);
-        // debug($result);
-        return array_shift($result);
     }
 }
