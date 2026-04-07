@@ -4,7 +4,7 @@ namespace Models;
 
 class Treatment extends Database {
     protected static $table = 'treatments';
-    protected static $columns = ['id', 'patient_id', 'user_id', 'specialty_id', 'treatment_name', 'total_cost', 'status'];
+    protected static $columns = ['id', 'patient_id', 'user_id', 'specialty_id', 'treatment_name', 'total_cost', 'status', 'active'];
 
     public $id;
     public $patient_id;
@@ -13,6 +13,7 @@ class Treatment extends Database {
     public $treatment_name;
     public $total_cost;
     public $status;
+    public $active;
 
     // Loaded via JOIN (not in $columns, excluded from create/update)
     public $doctor_name;
@@ -32,6 +33,7 @@ class Treatment extends Database {
         $this->treatment_name = $args['treatment_name'] ?? '';
         $this->total_cost = $args['total_cost'] ?? '';
         $this->status = $args['status'] ?? 'pendiente';
+        $this->active = $args['active'] ?? '1';
     }
 
     public function validate() {
@@ -61,7 +63,7 @@ class Treatment extends Database {
                   FROM treatments t 
                   INNER JOIN users u ON t.user_id = u.id 
                   INNER JOIN specialties s ON t.specialty_id = s.id 
-                  WHERE t.patient_id = ? 
+                  WHERE t.patient_id = ? AND t.active = '1'
                   ORDER BY t.id DESC";
         return self::customQuery($query, true, 'i', $patientId);
     }

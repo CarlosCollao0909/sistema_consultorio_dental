@@ -95,10 +95,12 @@ class TreatmentController {
             $id = filter_var($_POST['id'] ?? '', FILTER_VALIDATE_INT);
             validateRedirect($id, "/admin/patients/profile?id=$patientId");
 
+            /** @var Treatment $treatment */
             $treatment = Treatment::find($id);
             validateRedirect($treatment, "/admin/patients/profile?id=$patientId");
 
-            $result = $treatment->delete();
+            $treatment->active = '0';
+            $result = $treatment->update();
             if ($result) {
                 header("Location: /admin/patients/profile?id=$patientId&treatment_deleted=1");
                 exit;

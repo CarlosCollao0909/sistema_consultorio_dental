@@ -12,7 +12,7 @@
     Tratamiento: <strong><?php echo sanitizeHTML($treatment->treatment_name); ?></strong>
     <span class="mx-2">|</span>
     <i class="fa-solid fa-money-bill-wave mr-1"></i>
-    Balance pendiente: <strong class="text-rose-600">$<?php echo number_format($balance, 2); ?></strong>
+    Balance pendiente: <strong class="text-rose-600">Bs. <?php echo number_format($balance, 2); ?></strong>
 </div>
 
 <div class="rounded-xl border border-slate-200 bg-white p-6 shadow-md md:p-8">
@@ -35,7 +35,7 @@
                         value="<?php echo sanitizeHTML($payment->amount_paid); ?>"
                         min="0.01"
                         step="0.01"
-                        max="<?php echo $balance; ?>"
+                        
                         class="w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-slate-800 shadow-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
                         placeholder="Ej. 500.00"
                     >

@@ -69,7 +69,7 @@ $appointmentStatusLabels = [
         <div class="space-y-4">
             <?php foreach ($treatments as $treatment): ?>
                 <?php
-                    $tstatus = $statusLabels[$treatment->status] ?? $statusLabels['pendiente'];
+                $tstatus = $statusLabels[$treatment->status] ?? $statusLabels['pendiente'];
                 ?>
                 <div class="rounded-xl border border-slate-200 bg-white shadow-md">
                     <!-- Treatment Header -->
@@ -155,13 +155,6 @@ $appointmentStatusLabels = [
                                                 class="inline-flex items-center rounded-md bg-amber-100 px-2 py-1 text-xs font-medium text-amber-800 transition hover:bg-amber-200">
                                                 <i class="fa-solid fa-pen"></i>
                                             </a>
-                                            <form method="POST" action="/admin/appointments/delete" class="delete-form inline">
-                                                <input type="hidden" name="id" value="<?php echo $appointment->id; ?>">
-                                                <input type="hidden" name="patient_id" value="<?php echo $patient->id; ?>">
-                                                <button type="submit" class="inline-flex cursor-pointer items-center rounded-md bg-rose-100 px-2 py-1 text-xs font-medium text-rose-700 transition hover:bg-rose-200">
-                                                    <i class="fa-solid fa-trash"></i>
-                                                </button>
-                                            </form>
                                         </div>
                                     </div>
                                 <?php endforeach; ?>
@@ -196,7 +189,7 @@ $appointmentStatusLabels = [
                                             <span class="font-semibold text-emerald-700">Bs. <?php echo number_format($payment->amount_paid, 2); ?></span>
                                             <span class="text-slate-600"><?php echo formatTimestamp($payment->payment_date); ?></span>
                                         </div>
-                                            <form method="POST" action="/admin/payments/delete" class="delete-form inline">
+                                        <form method="POST" action="/admin/payments/delete" class="delete-form inline">
                                             <input type="hidden" name="id" value="<?php echo $payment->id; ?>">
                                             <input type="hidden" name="patient_id" value="<?php echo $patient->id; ?>">
                                             <button type="submit" class="inline-flex cursor-pointer items-center rounded-md bg-rose-100 px-2 py-1 text-xs font-medium text-rose-700 transition hover:bg-rose-200">
@@ -260,4 +253,3 @@ $appointmentStatusLabels = [
         <?php endif; ?>
     </div>
 </div>
-

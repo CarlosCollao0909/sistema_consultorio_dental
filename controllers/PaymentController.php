@@ -37,7 +37,7 @@ class PaymentController {
 
             if (empty($alerts)) {
                 if ((float)$payment->amount_paid > $balance) {
-                    Payment::setAlert('error', 'El monto excede el balance pendiente ($' . number_format($balance, 2) . ')');
+                    Payment::setAlert('error', 'El monto excede el balance pendiente (Bs. ' . number_format($balance, 2) . ')');
                     $alerts = Payment::getAlerts();
                 } else {
                     $payment->payment_date = date('Y-m-d H:i:s');
