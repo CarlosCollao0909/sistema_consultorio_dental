@@ -231,13 +231,15 @@ $appointmentStatusLabels = [
                             <i class="fa-solid fa-file-pdf text-lg text-rose-500"></i>
                             <div>
                                 <p class="font-medium text-slate-800"><?php echo sanitizeHTML($attachment->file_name); ?></p>
-                                <p class="text-xs text-slate-500"><?php echo $attachment->uploaded_at; ?></p>
+                                <p class="text-xs text-slate-500">Subido el <?php echo formatTimestamp($attachment->uploaded_at, true); ?></p>
                             </div>
                         </div>
                         <div class="flex items-center gap-2">
                             <a href="/admin/attachments/download?id=<?php echo $attachment->id; ?>" class="inline-flex items-center gap-1 rounded-md bg-blue-50 px-3 py-1.5 text-sm font-medium text-blue-700 transition hover:bg-blue-100">
                                 <i class="fa-solid fa-download"></i>
-                                Descargar
+                            </a>
+                            <a href="/admin/attachments/show?id=<?php echo $attachment->id; ?>" class="inline-flex items-center gap-1 rounded-md bg-emerald-50 px-3 py-1.5 text-sm font-medium text-emerald-700 transition hover:bg-emerald-100" target="_blank">
+                                <i class="fa-solid fa-eye"></i>
                             </a>
                             <form method="POST" action="/admin/attachments/delete" class="delete-form inline">
                                 <input type="hidden" name="id" value="<?php echo $attachment->id; ?>">

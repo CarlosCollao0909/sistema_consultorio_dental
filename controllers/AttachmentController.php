@@ -7,7 +7,6 @@ use Models\Attachment;
 
 class AttachmentController {
     private const UPLOAD_DIR = __DIR__ . '/../storage/PDFs/';
-    private const MAX_SIZE = 5 * 1024 * 1024; // 5MB
 
     public static function create(Router $router) {
         isStartedSession();
@@ -17,41 +16,48 @@ class AttachmentController {
         validateRedirect($patientId, '/admin/patients');
 
         $alerts = [];
+        $attachment = new Attachment;
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $file = $_FILES['attachment'] ?? null;
+            // Detect when PHP discards $_POST and $_FILES due to post_max_size exceeded
+            $contentLength = isset($_SERVER['CONTENT_LENGTH']) ? (int) $_SERVER['CONTENT_LENGTH'] : 0;
+            $postMaxBytes = self::parseSize(ini_get('post_max_size'));
 
-            if (!$file || $file['error'] !== UPLOAD_ERR_OK) {
-                Attachment::setAlert('error', 'Debe seleccionar un archivo PDF');
+            if ($contentLength > $postMaxBytes) {
+                Attachment::setAlert('error', 'El archivo no debe superar 5MB');
                 $alerts = Attachment::getAlerts();
             } else {
-                // Validate MIME type
-                $finfo = new \finfo(FILEINFO_MIME_TYPE);
-                $mimeType = $finfo->file($file['tmp_name']);
-                if ($mimeType !== 'application/pdf') {
-                    Attachment::setAlert('error', 'El archivo debe ser un PDF');
-                    $alerts = Attachment::getAlerts();
-                } elseif ($file['size'] > self::MAX_SIZE) {
-                    Attachment::setAlert('error', 'El archivo no debe superar 5MB');
-                    $alerts = Attachment::getAlerts();
-                } else {
-                    $hashedName = md5(uniqid((string)rand(), true)) . '.pdf';
-                    $originalName = basename($file['name']);
-                    $destination = self::UPLOAD_DIR . $hashedName;
+                $attachment->synchronize([
+                    'patient_id' => $patientId,
+                    'file_name' => $_POST['file_name'] ?? '',
+                    'file' => $_FILES['attachment'] ?? null
+                ]);
 
-                    if (move_uploaded_file($file['tmp_name'], $destination)) {
-                        $attachment = new Attachment([
-                            'patient_id' => $patientId,
-                            'file_name' => $originalName,
-                            'file_path' => $hashedName,
-                            'uploaded_at' => date('Y-m-d H:i:s')
-                        ]);
+                $alerts = $attachment->validate();
 
+                if (empty($alerts)) {
+                    $hashedName = bin2hex(random_bytes(16)) . '.pdf';
+                    $filePath = self::UPLOAD_DIR . $hashedName;
+
+                    if (move_uploaded_file($attachment->file['tmp_name'], $filePath)) {
+                        $attachment->file_path = $hashedName;
+                        if (!str_ends_with(strtolower($attachment->file_name), '.pdf')) {
+                            $attachment->file_name .= '.pdf';
+                        }
+                        
                         $result = $attachment->create();
+
                         if ($result) {
                             header("Location: /admin/patients/profile?id=$patientId&attachment_uploaded=1");
                             exit;
                         }
+
+                        unlink($filePath);
+                        Attachment::setAlert('error', 'Hubo un error al guardar el archivo, por favor intente nuevamente');
+                        $alerts = Attachment::getAlerts();
+                    } else {
+                        Attachment::setAlert('error', 'Hubo un error al subir el archivo, por favor intente nuevamente');
+                        $alerts = Attachment::getAlerts();
                     }
                 }
             }
@@ -59,8 +65,20 @@ class AttachmentController {
 
         $router->render('admin/attachments/create', [
             'alerts' => $alerts,
-            'patientId' => $patientId
+            'patientId' => $patientId,
+            'attachment' => $attachment
         ]);
+    }
+
+    private static function parseSize(string $size): int {
+        $unit = strtolower(substr(trim($size), -1));
+        $value = (int) $size;
+        return match ($unit) {
+            'g' => $value * 1024 * 1024 * 1024,
+            'm' => $value * 1024 * 1024,
+            'k' => $value * 1024,
+            default => $value,
+        };
     }
 
     public static function download() {
@@ -83,6 +101,31 @@ class AttachmentController {
 
         header('Content-Type: application/pdf');
         header('Content-Disposition: attachment; filename="' . $attachment->file_name . '"');
+        header('Content-Length: ' . filesize($filePath));
+        readfile($filePath);
+        exit;
+    }
+
+    public static function show() {
+        isStartedSession();
+        isAuth();
+
+        $id = filter_var($_GET['id'] ?? '', FILTER_VALIDATE_INT);
+        validateRedirect($id, '/admin/patients');
+
+        /** @var Attachment $attachment */
+        $attachment = Attachment::find($id);
+        validateRedirect($attachment, '/admin/patients');
+
+        $filePath = self::UPLOAD_DIR . $attachment->file_path;
+
+        if (!file_exists($filePath)) {
+            header("Location: /admin/patients/profile?id=$attachment->patient_id");
+            exit;
+        }
+
+        header('Content-Type: application/pdf');
+        header('Content-Disposition: inline; filename="' . $attachment->file_name . '"');
         header('Content-Length: ' . filesize($filePath));
         readfile($filePath);
         exit;

@@ -16,7 +16,18 @@
         <fieldset class="rounded-xl border border-slate-200 bg-slate-50/70 p-5 md:p-6">
             <legend class="px-2 text-sm font-semibold uppercase tracking-wide text-slate-700">Archivo Adjunto</legend>
 
-            <div class="mt-3">
+            <div class="mt-3 grid grid-cols-1 gap-5">
+                <div class="space-y-2">
+                    <label for="file_name" class="block text-sm font-medium text-slate-700">Nombre del Archivo</label>
+                    <input
+                        type="text"
+                        name="file_name"
+                        id="file_name"
+                        value="<?php sanitizeHTML($attachment->file_name);?>"
+                        class="w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-slate-800 shadow-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+                        placeholder="Ej. Radiografía_Dentatura_Completa.pdf">
+                </div>
+
                 <div class="space-y-2">
                     <label for="attachment" class="block text-sm font-medium text-slate-700">Archivo PDF (máx. 5MB)</label>
                     <input
@@ -24,8 +35,7 @@
                         name="attachment"
                         id="attachment"
                         accept=".pdf"
-                        class="w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-slate-800 shadow-sm outline-none transition file:mr-4 file:rounded-md file:border-0 file:bg-blue-50 file:px-4 file:py-2 file:text-sm file:font-medium file:text-blue-700 hover:file:bg-blue-100 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
-                    >
+                        class="w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-slate-800 shadow-sm outline-none transition file:mr-4 file:rounded-md file:border-0 file:bg-blue-50 file:px-4 file:py-2 file:text-sm file:font-medium file:text-blue-700 hover:file:bg-blue-100 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20">
                 </div>
             </div>
         </fieldset>

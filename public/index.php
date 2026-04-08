@@ -61,6 +61,7 @@ $router->get('/admin/attachments/create', [AttachmentController::class, 'create'
 $router->post('/admin/attachments/create', [AttachmentController::class, 'create']);
 $router->post('/admin/attachments/delete', [AttachmentController::class, 'delete']);
 $router->get('/admin/attachments/download', [AttachmentController::class, 'download']);
+$router->get('/admin/attachments/show', [AttachmentController::class, 'show']);
 
 $router->get('/admin/specialties', [SpecialtyController::class, 'index']);
 $router->get('/admin/specialties/create', [SpecialtyController::class, 'create']);
