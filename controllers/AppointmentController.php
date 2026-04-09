@@ -90,6 +90,29 @@ class AppointmentController {
         ]);
     }
 
+    public static function getAppointments() {
+        isStartedSession();
+        isAuth();
+
+        $date = $_GET['date'] ?? null;
+
+        if ($date) {
+            $dates = explode('-', $date);
+            
+            if (count($dates) !== 3 || !checkdate((int)$dates[1], (int)$dates[2], (int)$dates[0])) {
+                echo json_encode(['error' => 'Fecha no válida']);
+                return;
+            }
+
+            $appointments = Appointment::getAppointments($date);
+        } else {
+            $appointments = Appointment::getAppointments();
+        }
+        
+        header('Content-Type: application/json');
+        echo json_encode($appointments);
+    }
+
     public static function delete() {
         isStartedSession();
         isAuth();

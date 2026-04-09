@@ -40,4 +40,25 @@ class Appointment extends Database {
         $query = "SELECT * FROM appointments WHERE treatment_id = ? ORDER BY date DESC, time DESC";
         return self::preparedQuery($query, 'i', $treatmentId);
     }
+
+    public static function getAppointments($date = null) {
+        $query = "SELECT 
+        a.id, 
+        a.date, 
+        a.time, 
+        a.status, 
+        a.observations,
+        CONCAT(p.name, ' ', p.last_name) AS patient_name,
+        t.treatment_name
+        FROM appointments a
+        LEFT JOIN treatments t ON a.treatment_id = t.id
+        LEFT JOIN patients p ON t.patient_id = p.id";
+        if ($date) {
+            $query .= " WHERE a.date = ? ORDER BY a.time ASC";
+            return self::customQuery($query, false, 's', $date);
+        }
+        return self::customQuery($query);
+    }
+
+
 }

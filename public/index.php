@@ -49,6 +49,8 @@ $router->post('/admin/appointments/create', [AppointmentController::class, 'crea
 $router->get('/admin/appointments/update', [AppointmentController::class, 'update']);
 $router->post('/admin/appointments/update', [AppointmentController::class, 'update']);
 $router->post('/admin/appointments/delete', [AppointmentController::class, 'delete']);
+$router->get('/api/appointments', [AppointmentController::class, 'getAppointments']);
+$router->post('/api/appointments/update-status', [AppointmentController::class, 'updateStatus']);
 
 // Payments
 $router->get('/admin/payments', [PaymentController::class, 'index']);
