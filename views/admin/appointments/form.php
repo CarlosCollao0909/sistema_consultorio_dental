@@ -31,10 +31,9 @@
                 id="status"
                 class="w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-slate-800 shadow-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
             >
-                <option value="programada" <?php echo $appointment->status === 'programada' ? 'selected' : ''; ?>>Programada</option>
-                <option value="completada" <?php echo $appointment->status === 'completada' ? 'selected' : ''; ?>>Completada</option>
-                <option value="cancelada" <?php echo $appointment->status === 'cancelada' ? 'selected' : ''; ?>>Cancelada</option>
-                <option value="no_asistio" <?php echo $appointment->status === 'no_asistio' ? 'selected' : ''; ?>>No asistió</option>
+                <option value="pending" <?php echo $appointment->status === 'pending' ? 'selected' : ''; ?>>Pendiente</option>
+                <option value="completed" <?php echo $appointment->status === 'completed' ? 'selected' : ''; ?>>Completada</option>
+                <option value="canceled" <?php echo $appointment->status === 'canceled' ? 'selected' : ''; ?>>Cancelada</option>
             </select>
         </div>
 

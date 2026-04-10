@@ -184,6 +184,11 @@ const showCalendar = () => {
             week: 'Semana',
             day: 'Día'
         },
+        eventTimeFormat: {
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+        },
         selectable: true,
         selectMirror: true,
         unselectAuto: true,
@@ -200,9 +205,9 @@ const showCalendar = () => {
             today.setHours(0, 0, 0, 0);
 
             if (appointmentDate < today) {
-                info.el.classList.add('bg-gray-300', 'text-gray-600');
+                info.el.classList.add('fc-event-past');
             } else {
-                info.el.classList.add('bg-blue-500', 'text-white');
+                info.el.classList.add('fc-event-upcoming');
             }
         }
     });
@@ -222,15 +227,15 @@ const addLegend = () => {
 
     const legend = document.createElement('div');
     legend.id = 'calendar-legend';
-    legend.classList.add('mt-4', 'flex', 'items-center', 'space-x-4');
+    legend.classList.add('calendar-legend');
 
     const upcomingLegend = document.createElement('div');
-    upcomingLegend.classList.add('flex', 'items-center', 'space-x-1');
-    upcomingLegend.innerHTML = `<span class="w-4 h-4 bg-blue-500 rounded-full"></span><span>Próximas Citas</span>`;
+    upcomingLegend.classList.add('calendar-legend-item');
+    upcomingLegend.innerHTML = `<span class="calendar-legend-dot calendar-legend-dot-upcoming"></span><span class="calendar-legend-label">Próximas citas</span>`;
 
     const pastLegend = document.createElement('div');
-    pastLegend.classList.add('flex', 'items-center', 'space-x-1');
-    pastLegend.innerHTML = `<span class="w-4 h-4 bg-gray-300 rounded-full"></span><span>Citas Pasadas</span>`;
+    pastLegend.classList.add('calendar-legend-item');
+    pastLegend.innerHTML = `<span class="calendar-legend-dot calendar-legend-dot-past"></span><span class="calendar-legend-label">Citas pasadas</span>`;
 
     legend.appendChild(upcomingLegend);
     legend.appendChild(pastLegend);
@@ -276,23 +281,37 @@ const fetchAppointmentsByDate = async (date) => {
     }
 }
 
+const setToggleStatusButtonState = (button, status) => {
+    button.classList.remove('toggle-status-btn--to-complete', 'toggle-status-btn--to-pending');
+
+    if (status === 'completed') {
+        button.textContent = 'Marcar como Pendiente';
+        button.classList.add('toggle-status-btn--to-pending');
+        return;
+    }
+
+    button.textContent = 'Marcar como Completada';
+    button.classList.add('toggle-status-btn--to-complete');
+}
+
 const showAppointments = (appointments, date) => {
     const appointmentsContainer = document.querySelector('#appointments');
     if (!appointmentsContainer) return;
 
     appointmentsContainer.innerHTML = '';
 
-    const dateObj = new Date(date);
+    const dateObj = new Date(date + 'T00:00:00');
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    const formattedDate = dateObj.toLocaleDateString('es-ES', options);
+    const formattedDate = dateObj.toLocaleDateString('es-BO', options);
 
     const title = document.createElement('h2');
-    title.classList.add('text-xl', 'font-semibold', 'mb-4');
-    title.textContent = `Citas para ${formattedDate}`;
+    title.classList.add('appointments-title');
+    title.textContent = `Citas para el ${formattedDate}`;
     appointmentsContainer.appendChild(title);
 
     if (appointments.length === 0) {
         const noAppointments = document.createElement('p');
+        noAppointments.classList.add('appointments-empty');
         noAppointments.textContent = 'No hay citas para esta fecha.';
         appointmentsContainer.appendChild(noAppointments);
         return;
@@ -300,22 +319,60 @@ const showAppointments = (appointments, date) => {
 
     appointments.forEach(appointment => {
         const appointmentEl = document.createElement('div');
-        appointmentEl.classList.add('mb-3', 'p-3', 'border', 'rounded', 'bg-gray-50');
+        appointmentEl.classList.add('appointment-card');
 
         const time = document.createElement('p');
-        time.classList.add('text-sm', 'text-gray-500');
+        time.classList.add('appointment-time');
         time.textContent = `Hora: ${appointment.time}`;
         appointmentEl.appendChild(time);
 
         const patient = document.createElement('p');
-        patient.classList.add('text-lg', 'font-medium');
+        patient.classList.add('appointment-patient');
         patient.textContent = `Paciente: ${appointment.patient_name}`;
         appointmentEl.appendChild(patient);
 
         const treatment = document.createElement('p');
-        treatment.classList.add('text-sm', 'text-gray-700');
+        treatment.classList.add('appointment-treatment');
         treatment.textContent = `Tratamiento: ${appointment.treatment_name}`;
         appointmentEl.appendChild(treatment);
+
+        const observations = document.createElement('p');
+        observations.classList.add('appointment-observations');
+        observations.textContent = `Observaciones para la cita: ${appointment.observations || 'N/A'}`;
+        appointmentEl.appendChild(observations);
+
+        const toggleStatusBtn = document.createElement('button');
+        toggleStatusBtn.classList.add('toggle-status-btn');
+        setToggleStatusButtonState(toggleStatusBtn, appointment.status);
+        toggleStatusBtn.addEventListener('click', async () => {
+            try {
+                const newStatus = appointment.status === 'completed' ? 'scheduled' : 'completed';
+                const url = `${location.origin}/api/appointments/update-status`;
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: `id=${appointment.id}&status=${newStatus}`
+                });
+                if (!response.ok) {
+                    throw new Error('Error al cambiar el estado de la cita');
+                }
+                const result = await response.json();
+                if (result.success) {
+                    appointment.status = newStatus;
+                    setToggleStatusButtonState(toggleStatusBtn, newStatus);
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Estado Actualizado',
+                        text: `La cita ha sido marcada como ${newStatus === 'completed' ? 'Completada' : 'Pendiente'}.`,
+                        confirmButtonText: 'OK'
+                    });
+                }
+            } catch (error) {
+                console.log('Error al cambiar estado: ', error);
+            }
+        });
+        appointmentEl.appendChild(toggleStatusBtn);
 
         appointmentsContainer.appendChild(appointmentEl);
     });

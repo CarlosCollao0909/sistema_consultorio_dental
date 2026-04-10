@@ -32,7 +32,7 @@ class Treatment extends Database {
         $this->specialty_id = $args['specialty_id'] ?? '';
         $this->treatment_name = $args['treatment_name'] ?? '';
         $this->total_cost = $args['total_cost'] ?? '';
-        $this->status = $args['status'] ?? 'pendiente';
+        $this->status = $args['status'] ?? 'pending';
         $this->active = $args['active'] ?? '1';
     }
 

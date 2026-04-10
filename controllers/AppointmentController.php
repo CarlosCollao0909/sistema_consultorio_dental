@@ -104,13 +104,44 @@ class AppointmentController {
                 return;
             }
 
-            $appointments = Appointment::getAppointments($date);
+            $appointments = Appointment::getAppointments($_SESSION['id'], $date);
         } else {
-            $appointments = Appointment::getAppointments();
+            $appointments = Appointment::getAppointments($_SESSION['id']);
         }
         
         header('Content-Type: application/json');
         echo json_encode($appointments);
+    }
+
+    public static function updateStatus() {
+        isStartedSession();
+        isAuth();
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id = filter_var($_POST['id'] ?? '', FILTER_VALIDATE_INT);
+            $status = $_POST['status'] ?? '';
+
+            if (!$id || !$status) {
+                echo json_encode(['error' => 'Datos no válidos']);
+                return;
+            }
+
+            /** @var Appointment $appointment */
+            $appointment = Appointment::find($id);
+            if (!$appointment) {
+                echo json_encode(['error' => 'Cita no encontrada']);
+                return;
+            }
+
+            $appointment->status = $status;
+            $result = $appointment->update();
+
+            if ($result) {
+                echo json_encode(['success' => 'Estado actualizado']);
+            } else {
+                echo json_encode(['error' => 'Error al actualizar el estado']);
+            }
+        }
     }
 
     public static function delete() {

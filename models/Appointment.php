@@ -41,7 +41,7 @@ class Appointment extends Database {
         return self::preparedQuery($query, 'i', $treatmentId);
     }
 
-    public static function getAppointments($date = null) {
+    public static function getAppointments($userId, $date = null) {
         $query = "SELECT 
         a.id, 
         a.date, 
@@ -52,13 +52,12 @@ class Appointment extends Database {
         t.treatment_name
         FROM appointments a
         LEFT JOIN treatments t ON a.treatment_id = t.id
-        LEFT JOIN patients p ON t.patient_id = p.id";
+        LEFT JOIN patients p ON t.patient_id = p.id
+        WHERE t.user_id = ?";
         if ($date) {
-            $query .= " WHERE a.date = ? ORDER BY a.time ASC";
-            return self::customQuery($query, false, 's', $date);
+            $query .= " AND a.date = ? ORDER BY a.time ASC";
+            return self::customQuery($query, false, 'is', $userId, $date);
         }
-        return self::customQuery($query);
+        return self::customQuery($query, false, 'i', $userId);
     }
-
-
 }

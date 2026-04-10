@@ -63,10 +63,10 @@
                 id="status"
                 class="w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-slate-800 shadow-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
             >
-                <option value="pendiente" <?php echo $treatment->status === 'pendiente' ? 'selected' : ''; ?>>Pendiente</option>
-                <option value="en_progreso" <?php echo $treatment->status === 'en_progreso' ? 'selected' : ''; ?>>En progreso</option>
-                <option value="completado" <?php echo $treatment->status === 'completado' ? 'selected' : ''; ?>>Completado</option>
-                <option value="cancelado" <?php echo $treatment->status === 'cancelado' ? 'selected' : ''; ?>>Cancelado</option>
+                <option value="pending" <?php echo $treatment->status === 'pending' ? 'selected' : ''; ?>>Pendiente</option>
+                <option value="in_progress" <?php echo $treatment->status === 'in_progress' ? 'selected' : ''; ?>>En progreso</option>
+                <option value="completed" <?php echo $treatment->status === 'completed' ? 'selected' : ''; ?>>Completado</option>
+                <option value="canceled" <?php echo $treatment->status === 'canceled' ? 'selected' : ''; ?>>Cancelado</option>
             </select>
         </div>
     </div>
