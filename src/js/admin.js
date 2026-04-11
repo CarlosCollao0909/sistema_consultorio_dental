@@ -4,6 +4,9 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import esLocale from "@fullcalendar/core/locales/es";
+import { Chart, BarController, DoughnutController, PieController, ArcElement, BarElement, CategoryScale, LinearScale, Tooltip, Legend } from "chart.js";
+
+Chart.register(BarController, DoughnutController, PieController, ArcElement, BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
 const ALERTS_CONFIG = {
     patient_created: {
@@ -96,6 +99,7 @@ const initializeAdmin = () => {
     showAlert();
     confirmDeletion();
     showCalendar();
+    initDashboard();
 }
 
 const clearURLParameter = (param) => {
@@ -376,4 +380,148 @@ const showAppointments = (appointments, date) => {
 
         appointmentsContainer.appendChild(appointmentEl);
     });
+}
+
+// ==================== DASHBOARD ====================
+const MONTH_NAMES = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+
+const STATUS_CONFIG = {
+    scheduled: { label: 'Programadas', color: 'rgb(59, 130, 246)' },
+    completed: { label: 'Completadas', color: 'rgb(34, 197, 94)' },
+    canceled: { label: 'Canceladas', color: 'rgb(239, 68, 68)' },
+    pending: { label: 'Pendientes', color: 'rgb(245, 158, 11)' }
+};
+
+const SPECIALTY_COLORS = [
+    'rgb(59, 130, 246)', 'rgb(16, 185, 129)', 'rgb(245, 158, 11)',
+    'rgb(239, 68, 68)', 'rgb(139, 92, 246)', 'rgb(236, 72, 153)',
+    'rgb(20, 184, 166)', 'rgb(249, 115, 22)'
+];
+
+const initDashboard = () => {
+    const dashboardEl = document.querySelector('#kpi-patients');
+    if (!dashboardEl) return;
+
+    fetchKpis();
+    fetchMonthlyRevenue();
+    fetchAppointmentsByStatus();
+    fetchTreatmentsBySpecialty();
+}
+
+const fetchKpis = async () => {
+    try {
+        const response = await fetch(`${location.origin}/api/dashboard/kpis`);
+        if (!response.ok) throw new Error('Error al obtener KPIs');
+        const data = await response.json();
+
+        document.querySelector('#kpi-patients').textContent = data.patients_count ?? 0;
+        document.querySelector('#kpi-today').textContent = data.today_appointments ?? 0;
+        document.querySelector('#kpi-revenue').textContent = `Bs ${parseFloat(data.monthly_revenue ?? 0).toLocaleString('es-BO', { minimumFractionDigits: 2 })}`;
+        document.querySelector('#kpi-treatments').textContent = data.active_treatments ?? 0;
+    } catch (error) {
+        console.log('Error KPIs:', error);
+    }
+}
+
+const fetchMonthlyRevenue = async () => {
+    try {
+        const response = await fetch(`${location.origin}/api/dashboard/monthly-revenue`);
+        if (!response.ok) throw new Error('Error al obtener ingresos mensuales');
+        const data = await response.json();
+
+        const labels = data.map(item => {
+            const [year, month] = item.month.split('-');
+            return `${MONTH_NAMES[parseInt(month) - 1]} ${year}`;
+        });
+        const values = data.map(item => parseFloat(item.total));
+
+        const ctx = document.querySelector('#chart-revenue');
+        if (!ctx) return;
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels,
+                datasets: [{
+                    label: 'Ingresos (Bs)',
+                    data: values,
+                    backgroundColor: 'rgba(59, 130, 246, 0.7)',
+                    borderColor: 'rgb(59, 130, 246)',
+                    borderWidth: 1,
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { beginAtZero: true, ticks: { callback: v => `Bs ${v}` } }
+                }
+            }
+        });
+    } catch (error) {
+        console.log('Error monthly revenue:', error);
+    }
+}
+
+const fetchAppointmentsByStatus = async () => {
+    try {
+        const response = await fetch(`${location.origin}/api/dashboard/appointments-by-status`);
+        if (!response.ok) throw new Error('Error al obtener citas por estado');
+        const data = await response.json();
+
+        const labels = data.map(item => STATUS_CONFIG[item.status]?.label ?? item.status);
+        const values = data.map(item => parseInt(item.count));
+        const colors = data.map(item => STATUS_CONFIG[item.status]?.color ?? 'rgb(148, 163, 184)');
+
+        const ctx = document.querySelector('#chart-appointments-status');
+        if (!ctx) return;
+
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels,
+                datasets: [{ data: values, backgroundColor: colors, borderWidth: 2 }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { position: 'bottom', labels: { padding: 16, usePointStyle: true } }
+                }
+            }
+        });
+    } catch (error) {
+        console.log('Error appointments by status:', error);
+    }
+}
+
+const fetchTreatmentsBySpecialty = async () => {
+    try {
+        const response = await fetch(`${location.origin}/api/dashboard/treatments-by-specialty`);
+        if (!response.ok) throw new Error('Error al obtener tratamientos por especialidad');
+        const data = await response.json();
+
+        const labels = data.map(item => item.specialty_name);
+        const values = data.map(item => parseInt(item.count));
+        const colors = data.map((_, i) => SPECIALTY_COLORS[i % SPECIALTY_COLORS.length]);
+
+        const ctx = document.querySelector('#chart-specialties');
+        if (!ctx) return;
+
+        new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels,
+                datasets: [{ data: values, backgroundColor: colors, borderWidth: 2 }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { position: 'bottom', labels: { padding: 16, usePointStyle: true } }
+                }
+            }
+        });
+    } catch (error) {
+        console.log('Error treatments by specialty:', error);
+    }
 }

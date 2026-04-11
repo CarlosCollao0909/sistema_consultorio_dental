@@ -25,6 +25,10 @@ $router->post('/create-account', [UserController::class, 'createAccount']);
 $router->get('/message', [UserController::class, 'showMessage']);
 
 $router->get('/admin/dashboard', [DashboardController::class, 'index']);
+$router->get('/api/dashboard/kpis', [DashboardController::class, 'getKpis']);
+$router->get('/api/dashboard/monthly-revenue', [DashboardController::class, 'getMonthlyRevenue']);
+$router->get('/api/dashboard/appointments-by-status', [DashboardController::class, 'getAppointmentsByStatus']);
+$router->get('/api/dashboard/treatments-by-specialty', [DashboardController::class, 'getTreatmentsBySpecialty']);
 
 $router->get('/admin/patients', [PatientController::class, 'index']);
 $router->get('/admin/patients/create', [PatientController::class, 'create']);
