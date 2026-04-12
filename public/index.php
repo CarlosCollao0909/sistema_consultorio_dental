@@ -61,6 +61,7 @@ $router->get('/admin/payments', [PaymentController::class, 'index']);
 $router->get('/admin/payments/create', [PaymentController::class, 'create']);
 $router->post('/admin/payments/create', [PaymentController::class, 'create']);
 $router->post('/admin/payments/delete', [PaymentController::class, 'delete']);
+$router->get('/admin/payments/receipt', [PaymentController::class, 'receipt']);
 
 // Attachments
 $router->get('/admin/attachments/create', [AttachmentController::class, 'create']);

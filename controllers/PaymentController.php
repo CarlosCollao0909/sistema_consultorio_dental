@@ -2,7 +2,9 @@
 
 namespace Controllers;
 
+use Dompdf\Dompdf;
 use MVC\Router;
+use Models\Patient;
 use Models\Payment;
 use Models\Treatment;
 
@@ -79,5 +81,53 @@ class PaymentController {
                 exit;
             }
         }
+    }
+
+    public static function receipt() {
+        isStartedSession();
+        isAuth();
+
+        $treatmentId = filter_var($_GET['treatment_id'] ?? '', FILTER_VALIDATE_INT);
+        validateRedirect($treatmentId, '/admin/patients');
+
+        // Load treatment with doctor and specialty names
+        /** @var Treatment $treatment  */
+        $treatment = Treatment::find($treatmentId);
+        validateRedirect($treatment, '/admin/patients');
+
+        // Load patient and verify ownership
+        $patient = Patient::where(['id' => $treatment->patient_id, 'user_id' => $_SESSION['id'], 'status' => '1']);
+        validateRedirect($patient, '/admin/patients');
+
+        // Load doctor_name and specialty_name via the JOIN query
+        $treatmentFull = Treatment::findByPatient($patient->id);
+        foreach ($treatmentFull as $t) {
+            if ((int)$t->id === (int)$treatmentId) {
+                $treatment->doctor_name = $t->doctor_name;
+                $treatment->specialty_name = $t->specialty_name;
+                break;
+            }
+        }
+
+        // Load payments and calculate totals
+        $payments = Payment::findByTreatment($treatmentId);
+        $totalPaid = Payment::totalPaidByTreatment($treatmentId);
+        $balance = (float)$treatment->total_cost - $totalPaid;
+        $clinic = getClinicInfo();
+
+        // Render receipt HTML
+        ob_start();
+        include __DIR__ . '/../views/admin/payments/receipt.php';
+        $html = ob_get_clean();
+
+        // Generate PDF
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('letter', 'landscape');
+        $dompdf->render();
+
+        $fileName = 'Recibo_' . preg_replace('/[^A-Za-z0-9_]/', '_', $treatment->treatment_name) . '_' . date('Ymd') . '.pdf';
+        $dompdf->stream($fileName, ['Attachment' => false]);
+        exit;
     }
 }

@@ -1,6 +1,5 @@
 <?php
 $statusLabels = [
-    'pending' => ['label' => 'Pendiente', 'class' => 'bg-amber-100 text-amber-800'],
     'in_progress' => ['label' => 'En progreso', 'class' => 'bg-blue-100 text-blue-800'],
     'completed' => ['label' => 'Completado', 'class' => 'bg-emerald-100 text-emerald-800'],
     'canceled' => ['label' => 'Cancelado', 'class' => 'bg-rose-100 text-rose-700'],
@@ -68,7 +67,7 @@ $appointmentStatusLabels = [
         <div class="space-y-4">
             <?php foreach ($treatments as $treatment): ?>
                 <?php
-                $tstatus = $statusLabels[$treatment->status] ?? $statusLabels['pending'];
+                $tstatus = $statusLabels[$treatment->status] ?? $statusLabels['in_progress'];
                 ?>
                 <div class="rounded-xl border border-slate-200 bg-white shadow-md">
                     <!-- Treatment Header -->
@@ -85,6 +84,15 @@ $appointmentStatusLabels = [
                                 <span class="inline-flex rounded-full px-3 py-1 text-xs font-semibold <?php echo $tstatus['class']; ?>">
                                     <?php echo $tstatus['label']; ?>
                                 </span>
+                                <?php if (!empty($treatment->payments)): ?>
+                                    <a
+                                        href="/admin/payments/receipt?treatment_id=<?php echo $treatment->id; ?>"
+                                        target="_blank"
+                                        class="inline-flex items-center gap-1 rounded-md bg-indigo-100 px-3 py-1.5 text-sm font-medium text-indigo-800 transition hover:bg-indigo-200"
+                                        title="Generar Recibo PDF">
+                                        <i class="fa-solid fa-receipt"></i>
+                                    </a>
+                                <?php endif; ?>
                                 <a
                                     href="/admin/treatments/update?id=<?php echo $treatment->id; ?>"
                                     class="inline-flex items-center gap-1 rounded-md bg-amber-100 px-3 py-1.5 text-sm font-medium text-amber-800 transition hover:bg-amber-200">

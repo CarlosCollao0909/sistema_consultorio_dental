@@ -63,7 +63,6 @@
                 id="status"
                 class="w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-slate-800 shadow-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
             >
-                <option value="pending" <?php echo $treatment->status === 'pending' ? 'selected' : ''; ?>>Pendiente</option>
                 <option value="in_progress" <?php echo $treatment->status === 'in_progress' ? 'selected' : ''; ?>>En progreso</option>
                 <option value="completed" <?php echo $treatment->status === 'completed' ? 'selected' : ''; ?>>Completado</option>
                 <option value="canceled" <?php echo $treatment->status === 'canceled' ? 'selected' : ''; ?>>Cancelado</option>

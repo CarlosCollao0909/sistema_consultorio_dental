@@ -45,6 +45,15 @@ function calculateAge($birthDate) {
     return $age;
 }
 
+function getClinicInfo() {
+    return [
+        'name' => $_ENV['CLINIC_NAME'] ?? 'Consultorio Dental',
+        'address' => $_ENV['CLINIC_ADDRESS'] ?? '',
+        'phone' => $_ENV['CLINIC_PHONE'] ?? '',
+        'email' => $_ENV['CLINIC_EMAIL'] ?? '',
+    ];
+}
+
 function formatTimestamp($timestamp, $time = false) {
     $timestamp = is_string($timestamp) ? strtotime($timestamp) : (int)$timestamp;
 
