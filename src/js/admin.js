@@ -98,6 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
 const initializeAdmin = () => {
     showAlert();
     confirmDeletion();
+    goUp();
     showCalendar();
     initDashboard();
 }
@@ -163,6 +164,32 @@ window.toggleSection = (sectionId) => {
     if (icon) {
         icon.classList.toggle('rotate-180');
     }
+}
+
+// ==================== HELPER GO UP ====================
+const goUp = () => {
+    const goUpBtn = document.querySelector('#goUpBtn');
+    const scrollContainer = document.querySelector('#goUp');
+
+    if (!goUpBtn || !scrollContainer) return;
+
+    goUpBtn.addEventListener('click', () => {
+        console.log('up...');
+        scrollContainer.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+
+    scrollContainer.addEventListener('scroll', () => {
+        if (scrollContainer.scrollTop > 100) {
+            goUpBtn.classList.remove('opacity-0', 'pointer-events-none');
+            goUpBtn.classList.add('opacity-100', 'pointer-events-auto');
+        } else {
+            goUpBtn.classList.remove('opacity-100', 'pointer-events-auto');
+            goUpBtn.classList.add('opacity-0', 'pointer-events-none');
+        }
+    });
 }
 
 // ==================== CALENDAR ====================
@@ -334,6 +361,11 @@ const showAppointments = (appointments, date) => {
         patient.classList.add('appointment-patient');
         patient.textContent = `Paciente: ${appointment.patient_name}`;
         appointmentEl.appendChild(patient);
+
+        const specialty = document.createElement('p');
+        specialty.classList.add('appointment-specialty');
+        specialty.textContent = `Especialidad: ${appointment.specialty_name || 'N/A'}`;
+        appointmentEl.appendChild(specialty);
 
         const treatment = document.createElement('p');
         treatment.classList.add('appointment-treatment');

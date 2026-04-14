@@ -158,6 +158,13 @@
 	color: rgb(15 23 42);
 }
 
+.appointment-specialty {
+	margin-top: 0.2rem;
+	font-size: 0.9rem;
+	font-weight: 600;
+	color: rgb(100 116 139);
+}
+
 .appointment-treatment {
 	margin-top: 0.2rem;
 	font-size: 0.88rem;

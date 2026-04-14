@@ -49,15 +49,18 @@ class Appointment extends Database {
         a.status, 
         a.observations,
         CONCAT(p.name, ' ', p.last_name) AS patient_name,
-        t.treatment_name
+        t.treatment_name,
+        s.specialty_name
         FROM appointments a
         LEFT JOIN treatments t ON a.treatment_id = t.id
         LEFT JOIN patients p ON t.patient_id = p.id
+        LEFT JOIN specialties s ON t.specialty_id = s.id
         WHERE t.user_id = ?";
         if ($date) {
-            $query .= " AND a.date = ? ORDER BY a.time ASC";
+            $query .= " AND a.date = ?";
             return self::customQuery($query, false, 'is', $userId, $date);
         }
+        $query .= " ORDER BY a.time DESC";
         return self::customQuery($query, false, 'i', $userId);
     }
 }

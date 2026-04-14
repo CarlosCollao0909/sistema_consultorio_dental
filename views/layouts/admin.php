@@ -14,9 +14,9 @@
     $firstName = $fullName ? explode(' ', trim($fullName))[0] : 'Usuario';
     ?>
 
-    <div class="flex min-h-screen bg-slate-100">
+    <div class="flex h-screen bg-slate-100">
         <!-- Sidebar -->
-        <aside class="w-72 border-r border-slate-800 bg-slate-900 text-white shadow-lg">
+        <aside class="fixed inset-y-0 left-0 w-72 overflow-y-auto border-r border-slate-800 bg-slate-900 text-white shadow-lg">
             <div class="border-b border-slate-800 p-6">
                 <h1 class="inline-flex items-center gap-2 text-2xl font-bold tracking-tight">
                     <i class="fa-solid fa-tooth"></i>
@@ -27,19 +27,19 @@
             <nav class="mt-4 space-y-1 px-3">
                 <a href="/admin/dashboard"
                     class="inline-flex w-full items-center gap-2 rounded-lg px-4 py-2.5 text-white transition hover:bg-slate-800 hover:text-white <?php echo currentPage('/dashboard') ? 'bg-blue-700/70 shadow-sm' : ''; ?>"><i class="fa-solid fa-chart-line w-4"></i>Dashboard</a>
-                <a href="/admin/patients"
-                    class="inline-flex w-full items-center gap-2 rounded-lg px-4 py-2.5 text-white transition hover:bg-slate-800 hover:text-white <?php echo currentPage('/patients') ? 'bg-blue-700/70 shadow-sm' : ''; ?>"><i class="fa-solid fa-user-group w-4"></i>Pacientes</a>
                 <a href="/admin/appointments"
                     class="inline-flex w-full items-center gap-2 rounded-lg px-4 py-2.5 text-white transition hover:bg-slate-800 hover:text-white <?php echo currentPage('/appointments') ? 'bg-blue-700/70 shadow-sm' : ''; ?>"><i class="fa-solid fa-calendar-check w-4"></i>Citas</a>
+                <a href="/admin/patients"
+                    class="inline-flex w-full items-center gap-2 rounded-lg px-4 py-2.5 text-white transition hover:bg-slate-800 hover:text-white <?php echo currentPage('/patients') ? 'bg-blue-700/70 shadow-sm' : ''; ?>"><i class="fa-solid fa-user-group w-4"></i>Pacientes</a>
                 <a href="/admin/specialties"
                     class="inline-flex w-full items-center gap-2 rounded-lg px-4 py-2.5 text-white transition hover:bg-slate-800 hover:text-white <?php echo currentPage('/specialties') ? 'bg-blue-700/70 shadow-sm' : ''; ?>"><i class="fa-solid fa-stethoscope w-4"></i>Especialidades</a>
             </nav>
         </aside>
 
         <!-- Main Content -->
-        <div class="flex flex-1 flex-col">
+        <div class="ml-72 flex flex-1 flex-col">
             <!-- Header -->
-            <header class="border-b border-white bg-white/90 shadow-sm backdrop-blur">
+            <header class="sticky top-0 z-10 border-b border-white bg-white/90 shadow-sm backdrop-blur">
                 <div class="flex items-center justify-between px-8 py-4">
                     <div class="inline-flex items-center gap-3">
                         <div class="flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 text-slate-400">
@@ -58,9 +58,13 @@
             </header>
 
             <!-- Content Area -->
-            <main class="flex-1 overflow-auto p-8">
+            <main class="flex-1 overflow-auto p-8" id="goUp">
                 <?php echo $content; ?>
             </main>
+            <a href="javascript:void(0)" title="Ir Arriba" id="goUpBtn"
+                class="pointer-events-none fixed bottom-4 right-4 rounded-full bg-slate-800 p-3 text-white opacity-0 shadow-lg transition-all duration-300 ease-in-out hover:bg-slate-700">
+                <i class="fa-solid fa-arrow-up"></i>
+            </a>
         </div>
     </div>
     <script src="/build/js/admin.js"></script>
