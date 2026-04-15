@@ -27,6 +27,15 @@ function isAuth() {
     }
 }
 
+function isApiAuth() {
+    if (!isset($_SESSION['login'])) {
+        header('Content-Type: application/json');
+        http_response_code(401);
+        echo json_encode(['error' => 'No autorizado']);
+        exit;
+    }
+}
+
 function validateRedirect($variable, $url) {
     if (!$variable) {
         header("Location: $url");

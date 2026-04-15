@@ -416,7 +416,7 @@ const showAppointments = (appointments, date) => {
         setToggleStatusButtonState(toggleStatusBtn, appointment.status);
         toggleStatusBtn.addEventListener('click', async () => {
             try {
-                const newStatus = appointment.status === 'completed' ? 'scheduled' : 'completed';
+                const newStatus = appointment.status === 'completed' ? 'pending' : 'completed';
                 const url = `${location.origin}/api/appointments/update-status`;
                 const response = await fetch(url, {
                     method: 'POST',
@@ -452,7 +452,6 @@ const showAppointments = (appointments, date) => {
 const MONTH_NAMES = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
 
 const STATUS_CONFIG = {
-    scheduled: { label: 'Programadas', color: 'rgb(59, 130, 246)' },
     completed: { label: 'Completadas', color: 'rgb(34, 197, 94)' },
     canceled: { label: 'Canceladas', color: 'rgb(239, 68, 68)' },
     pending: { label: 'Pendientes', color: 'rgb(245, 158, 11)' }

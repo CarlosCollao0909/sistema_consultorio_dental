@@ -14,33 +14,33 @@ class DashboardController {
 
     public static function getKpis() {
         isStartedSession();
-        isAuth();
-        $data = Dashboard::getKpis($_SESSION['id']);
+        isApiAuth();
         header('Content-Type: application/json');
+        $data = Dashboard::getKpis($_SESSION['id']);
         echo json_encode($data);
     }
 
     public static function getMonthlyRevenue() {
         isStartedSession();
-        isAuth();
-        $data = Dashboard::getMonthlyRevenue($_SESSION['id']);
+        isApiAuth();
         header('Content-Type: application/json');
+        $data = Dashboard::getMonthlyRevenue($_SESSION['id']);
         echo json_encode($data);
     }
 
     public static function getAppointmentsByStatus() {
         isStartedSession();
-        isAuth();
-        $data = Dashboard::getAppointmentsByStatus($_SESSION['id']);
+        isApiAuth();
         header('Content-Type: application/json');
+        $data = Dashboard::getAppointmentsByStatus($_SESSION['id']);
         echo json_encode($data);
     }
 
     public static function getTreatmentsBySpecialty() {
         isStartedSession();
-        isAuth();
-        $data = Dashboard::getTreatmentsBySpecialty($_SESSION['id']);
+        isApiAuth();
         header('Content-Type: application/json');
+        $data = Dashboard::getTreatmentsBySpecialty($_SESSION['id']);
         echo json_encode($data);
     }
 }

@@ -18,7 +18,7 @@ class Appointment extends Database {
         $this->treatment_id = $args['treatment_id'] ?? '';
         $this->date = $args['date'] ?? '';
         $this->time = $args['time'] ?? '';
-        $this->status = $args['status'] ?? 'programada';
+        $this->status = $args['status'] ?? 'pending';
         $this->observations = $args['observations'] ?? '';
     }
 

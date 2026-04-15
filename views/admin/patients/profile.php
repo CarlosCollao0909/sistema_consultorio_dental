@@ -6,7 +6,7 @@ $statusLabels = [
 ];
 
 $appointmentStatusLabels = [
-    'scheduled' => ['label' => 'Programada', 'class' => 'bg-blue-100 text-blue-800'],
+    'pending' => ['label' => 'Pendiente', 'class' => 'bg-blue-100 text-blue-800'],
     'completed' => ['label' => 'Completada', 'class' => 'bg-emerald-100 text-emerald-800'],
     'canceled' => ['label' => 'Cancelada', 'class' => 'bg-rose-100 text-rose-700']
 ];
@@ -142,7 +142,7 @@ $appointmentStatusLabels = [
                                 <p class="text-sm text-slate-500">No hay citas registradas</p>
                             <?php else: ?>
                                 <?php foreach ($treatment->appointments as $appointment): ?>
-                                    <?php $astatus = $appointmentStatusLabels[$appointment->status] ?? $appointmentStatusLabels['scheduled']; ?>
+                                    <?php $astatus = $appointmentStatusLabels[$appointment->status] ?? $appointmentStatusLabels['pending']; ?>
                                     <div class="flex flex-wrap items-center justify-between gap-2 rounded-lg bg-slate-50 px-4 py-2.5 text-sm">
                                         <div class="flex items-center gap-3">
                                             <span class="font-medium text-slate-800"><?php echo $appointment->date; ?></span>

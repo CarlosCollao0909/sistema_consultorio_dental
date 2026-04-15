@@ -92,7 +92,9 @@ class AppointmentController {
 
     public static function getAppointments() {
         isStartedSession();
-        isAuth();
+        isApiAuth();
+
+        header('Content-Type: application/json');
 
         $date = $_GET['date'] ?? null;
 
@@ -100,6 +102,7 @@ class AppointmentController {
             $dates = explode('-', $date);
             
             if (count($dates) !== 3 || !checkdate((int)$dates[1], (int)$dates[2], (int)$dates[0])) {
+                http_response_code(400);
                 echo json_encode(['error' => 'Fecha no válida']);
                 return;
             }
@@ -108,30 +111,51 @@ class AppointmentController {
         } else {
             $appointments = Appointment::getAppointments($_SESSION['id']);
         }
-        
-        header('Content-Type: application/json');
+
         echo json_encode($appointments);
     }
 
     public static function updateStatus() {
         isStartedSession();
-        isAuth();
+        isApiAuth();
+
+        header('Content-Type: application/json');
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = filter_var($_POST['id'] ?? '', FILTER_VALIDATE_INT);
             $status = $_POST['status'] ?? '';
+            $allowedStatuses = ['pending', 'completed', 'canceled'];
 
             if (!$id || !$status) {
+                http_response_code(400);
                 echo json_encode(['error' => 'Datos no válidos']);
+                return;
+            }
+
+            if (!in_array($status, $allowedStatuses)) {
+                http_response_code(400);
+                echo json_encode(['error' => 'Estado no válido']);
+                return;
+            }
+
+            // Verificar que la cita pertenece al usuario autenticado
+            $appointments = Appointment::getAppointments($_SESSION['id']);
+            $ownsAppointment = false;
+            foreach ($appointments as $apt) {
+                if ((int)$apt->id === $id) {
+                    $ownsAppointment = true;
+                    break;
+                }
+            }
+
+            if (!$ownsAppointment) {
+                http_response_code(403);
+                echo json_encode(['error' => 'No tienes permiso para modificar esta cita']);
                 return;
             }
 
             /** @var Appointment $appointment */
             $appointment = Appointment::find($id);
-            if (!$appointment) {
-                echo json_encode(['error' => 'Cita no encontrada']);
-                return;
-            }
 
             $appointment->status = $status;
             $result = $appointment->update();
