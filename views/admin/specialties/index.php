@@ -11,43 +11,45 @@
     <?php if (empty($specialties)): ?>
         <p class="text-center text-gray-500 py-10 text-lg">No existen especialidades registradas</p>
     <?php else: ?>
-        <table class="min-w-full table-auto" id="dataTable">
-            <thead>
-                <tr class="bg-slate-100 text-xs font-semibold uppercase tracking-wide text-slate-600">
-                    <th class="py-3 px-6 text-left">Nombre de la Especialidad</th>
-                    <th class="py-3 px-6 text-left">Descripción</th>
-                    <th class="py-3 px-6 text-center">Acciones</th>
-                </tr>
-            </thead>
-            <tbody class="text-sm text-slate-700">
-                <?php foreach ($specialties as $specialty): ?>
-                    <tr class="border-b border-slate-100 transition hover:bg-slate-50">
-                        <td class="py-3 px-6 text-left whitespace-nowrap">
-                            <div class="flex items-center">
-                                <span class="font-semibold text-slate-800"><?php echo $specialty->specialty_name; ?></span>
-                            </div>
-                        </td>
-                        <td class="py-3 px-6 text-left">
-                            <span><?php echo $specialty->description; ?></span>
-                        </td>
-                        <td class="py-3 px-6 text-center">
-                            <div class="flex items-center justify-center gap-4">
-                                <a href="/admin/specialties/update?id=<?php echo $specialty->id; ?>" class="inline-flex items-center gap-2 rounded-md bg-amber-100 px-3 py-1.5 font-medium text-amber-800 transition hover:bg-amber-200">
-                                    <i class="fa-solid fa-pen"></i>
-                                    Editar
-                                </a>
-                                <form method="POST" action="/admin/specialties/delete" class="delete-form inline">
-                                    <input type="hidden" name="id" value="<?php echo $specialty->id; ?>">
-                                    <button type="submit" class="inline-flex cursor-pointer items-center gap-2 rounded-md bg-rose-100 px-3 py-1.5 font-medium text-rose-700 transition hover:bg-rose-200">
-                                        <i class="fa-solid fa-trash"></i>
-                                        Eliminar
-                                    </button>
-                                </form>
-                            </div>
-                        </td>
+        <div class="overflow-x-auto">
+            <table class="min-w-full table-auto" id="dataTable">
+                <thead>
+                    <tr class="bg-slate-100 text-xs font-semibold uppercase tracking-wide text-slate-600">
+                        <th class="py-3 px-3 text-left lg:px-6">Nombre de la Especialidad</th>
+                        <th class="py-3 px-3 text-left lg:px-6">Descripción</th>
+                        <th class="py-3 px-3 text-center lg:px-6">Acciones</th>
                     </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
+                </thead>
+                <tbody class="text-sm text-slate-700">
+                    <?php foreach ($specialties as $specialty): ?>
+                        <tr class="border-b border-slate-100 transition hover:bg-slate-50">
+                            <td class="py-3 px-3 text-left whitespace-nowrap lg:px-6">
+                                <div class="flex items-center">
+                                    <span class="font-semibold text-slate-800"><?php echo $specialty->specialty_name; ?></span>
+                                </div>
+                            </td>
+                            <td class="py-3 px-3 text-left lg:px-6">
+                                <span><?php echo $specialty->description; ?></span>
+                            </td>
+                            <td class="py-3 px-3 text-center lg:px-6">
+                                <div class="flex flex-wrap items-center justify-center gap-2 lg:gap-4">
+                                    <a href="/admin/specialties/update?id=<?php echo $specialty->id; ?>" class="inline-flex items-center gap-2 rounded-md bg-amber-100 px-3 py-1.5 font-medium text-amber-800 transition hover:bg-amber-200">
+                                        <i class="fa-solid fa-pen"></i>
+                                        <span class="hidden sm:inline">Editar</span>
+                                    </a>
+                                    <form method="POST" action="/admin/specialties/delete" class="delete-form inline">
+                                        <input type="hidden" name="id" value="<?php echo $specialty->id; ?>">
+                                        <button type="submit" class="inline-flex cursor-pointer items-center gap-2 rounded-md bg-rose-100 px-3 py-1.5 font-medium text-rose-700 transition hover:bg-rose-200">
+                                            <i class="fa-solid fa-trash"></i>
+                                            <span class="hidden sm:inline">Eliminar</span>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
     <?php endif; ?>
-</div
+</div>

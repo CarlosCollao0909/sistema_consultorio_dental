@@ -98,9 +98,43 @@ document.addEventListener('DOMContentLoaded', () => {
 const initializeAdmin = () => {
     showAlert();
     confirmDeletion();
+    initSidebar();
     goUp();
     showCalendar();
     initDashboard();
+}
+
+// ==================== SIDEBAR TOGGLE ====================
+const initSidebar = () => {
+    const sidebar = document.querySelector('#sidebar');
+    const overlay = document.querySelector('#sidebar-overlay');
+    const toggleBtn = document.querySelector('#sidebar-toggle');
+    const closeBtn = document.querySelector('#sidebar-close');
+
+    if (!sidebar || !overlay) return;
+
+    const openSidebar = () => {
+        sidebar.classList.remove('-translate-x-full');
+        sidebar.classList.add('translate-x-0');
+        overlay.classList.remove('hidden');
+    };
+
+    const closeSidebar = () => {
+        sidebar.classList.add('-translate-x-full');
+        sidebar.classList.remove('translate-x-0');
+        overlay.classList.add('hidden');
+    };
+
+    if (toggleBtn) toggleBtn.addEventListener('click', openSidebar);
+    if (closeBtn) closeBtn.addEventListener('click', closeSidebar);
+    overlay.addEventListener('click', closeSidebar);
+
+    // Cerrar sidebar al hacer click en un enlace de nav (solo en móvil)
+    sidebar.querySelectorAll('.sidebar-link').forEach(link => {
+        link.addEventListener('click', () => {
+            if (window.innerWidth < 1024) closeSidebar();
+        });
+    });
 }
 
 const clearURLParameter = (param) => {

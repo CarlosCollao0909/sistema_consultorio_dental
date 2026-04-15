@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/build/css/main.css">
-    <title>Consultorio Dental PerfectDent - Login</title>
+    <title>Consultorio Dental Perfect Dent - Login</title>
 </head>
 <body>
     <div class="flex min-h-screen items-center justify-center bg-linear-to-b from-slate-100 via-slate-50 to-white px-4 py-10">

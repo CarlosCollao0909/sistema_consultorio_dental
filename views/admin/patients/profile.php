@@ -21,7 +21,7 @@ $appointmentStatusLabels = [
 </div>
 
 <!-- Patient Info Card -->
-<div class="mb-8 rounded-xl border border-slate-200 bg-white p-6 shadow-md">
+<div class="mb-8 rounded-xl border border-slate-200 bg-white p-4 shadow-md sm:p-6">
     <h1 class="mb-4 text-2xl font-bold text-slate-800">
         <i class="fa-solid fa-user-circle mr-2 text-blue-600"></i>
         <?php echo sanitizeHTML($patient->name . ' ' . $patient->last_name); ?>
@@ -48,12 +48,12 @@ $appointmentStatusLabels = [
 
 <!-- Treatments Section -->
 <div class="mb-8">
-    <div class="mb-4 flex items-center justify-between">
+    <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
         <h2 class="text-xl font-bold text-slate-800">
             <i class="fa-solid fa-tooth mr-2 text-blue-600"></i>
             Tratamientos
         </h2>
-        <a href="/admin/treatments/create?patient_id=<?php echo $patient->id; ?>" class="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 font-semibold text-white shadow-md transition hover:bg-blue-700">
+        <a href="/admin/treatments/create?patient_id=<?php echo $patient->id; ?>" class="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-md transition hover:bg-blue-700 sm:px-4 sm:text-base">
             <i class="fa-solid fa-plus"></i>
             Nuevo Tratamiento
         </a>
@@ -216,12 +216,12 @@ $appointmentStatusLabels = [
 
 <!-- Attachments Section -->
 <div class="mb-8">
-    <div class="mb-4 flex items-center justify-between">
+    <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
         <h2 class="text-xl font-bold text-slate-800">
             <i class="fa-solid fa-file-pdf mr-2 text-rose-500"></i>
             Archivos Adjuntos
         </h2>
-        <a href="/admin/attachments/create?patient_id=<?php echo $patient->id; ?>" class="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 font-semibold text-white shadow-md transition hover:bg-blue-700">
+        <a href="/admin/attachments/create?patient_id=<?php echo $patient->id; ?>" class="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-md transition hover:bg-blue-700 sm:px-4 sm:text-base">
             <i class="fa-solid fa-upload"></i>
             Subir PDF
         </a>

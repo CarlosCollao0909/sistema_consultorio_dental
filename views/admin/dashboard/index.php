@@ -67,7 +67,7 @@
         <!-- Citas por Estado -->
         <div class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
             <h2 class="mb-4 text-lg font-semibold text-slate-800">Citas por Estado</h2>
-            <div class="mx-auto" style="max-width: 300px;">
+            <div class="mx-auto w-full max-w-xs">
                 <canvas id="chart-appointments-status"></canvas>
             </div>
         </div>
@@ -78,7 +78,7 @@
         <!-- Tratamientos por Especialidad -->
         <div class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
             <h2 class="mb-4 text-lg font-semibold text-slate-800">Tratamientos por Especialidad</h2>
-            <div class="mx-auto" style="max-width: 300px;">
+            <div class="mx-auto w-full max-w-xs">
                 <canvas id="chart-specialties"></canvas>
             </div>
         </div>
