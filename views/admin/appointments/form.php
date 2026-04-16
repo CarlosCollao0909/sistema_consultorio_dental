@@ -42,6 +42,7 @@
             <textarea
                 name="observations"
                 id="observations"
+                data-format="sentencecase"
                 rows="3"
                 class="w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-slate-800 shadow-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
                 placeholder="Notas o indicaciones para la cita..."

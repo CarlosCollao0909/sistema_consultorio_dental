@@ -12,5 +12,6 @@
             <?php echo $content; ?>
         </div>
     </div>
+    <script src="/build/js/account.js"></script>
 </body>
 </html>

@@ -87,7 +87,7 @@ function formatTimestamp($timestamp, $time = false) {
     $hour = date('H:i', $timestamp);
 
     if ($time) {
-        return "$weekDay, $day de $month de $year a las $hour";
+        return "$weekDay, $day de $month de $year. Hrs: $hour";
     }
     
     return "$weekDay, $day de $month de $year";

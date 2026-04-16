@@ -8,6 +8,7 @@
                 type="text"
                 name="specialty_name"
                 id="specialty_name"
+                data-format="titlecase"
                 value="<?php echo sanitizeHTML($specialty->specialty_name); ?>"
                 class="w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-slate-800 shadow-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
                 placeholder="Ej. Ortodoncia, Endodoncia..."
@@ -19,6 +20,7 @@
             <textarea
                 name="description"
                 id="description"
+                data-format="sentencecase"
                 rows="2"
                 class="w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-slate-800 shadow-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
                 placeholder="Descripción breve de la especialidad, procedimientos comunes, etc..."

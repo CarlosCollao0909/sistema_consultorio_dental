@@ -23,6 +23,7 @@
                         type="text"
                         name="file_name"
                         id="file_name"
+                        data-format="titlecase"
                         value="<?php sanitizeHTML($attachment->file_name);?>"
                         class="w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-slate-800 shadow-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
                         placeholder="Ej. Radiografía_Dentatura_Completa.pdf">

@@ -5,12 +5,12 @@
 <form action="/create-account" method="POST" class="space-y-4">
     <div class="space-y-2">
         <label for="name" class="block text-sm font-medium text-slate-700">Nombre</label>
-        <input type="text" name="name" id="name" placeholder="Tu nombre" class="w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-slate-800 shadow-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20" value="<?php echo $user->name; ?>">
+        <input type="text" name="name" id="name" data-format="titlecase" placeholder="Tu nombre" class="w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-slate-800 shadow-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20" value="<?php echo $user->name; ?>">
     </div>
 
     <div class="space-y-2">
         <label for="last_name" class="block text-sm font-medium text-slate-700">Apellido</label>
-        <input type="text" name="last_name" id="last_name" placeholder="Tu apellido" class="w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-slate-800 shadow-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20" value="<?php echo $user->last_name; ?>">
+        <input type="text" name="last_name" id="last_name" data-format="titlecase" placeholder="Tu apellido" class="w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-slate-800 shadow-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20" value="<?php echo $user->last_name; ?>">
     </div>
 
     <div class="space-y-2">
