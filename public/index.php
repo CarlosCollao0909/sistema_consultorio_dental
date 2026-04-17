@@ -14,6 +14,7 @@ use Controllers\PaymentController;
 use Controllers\TreatmentController;
 use Controllers\SpecialtyController;
 use Controllers\AttachmentController;
+use Controllers\ErrorController;
 
 $router = new Router();
 
@@ -76,5 +77,7 @@ $router->post('/admin/specialties/create', [SpecialtyController::class, 'create'
 $router->get('/admin/specialties/update', [SpecialtyController::class, 'update']);
 $router->post('/admin/specialties/update', [SpecialtyController::class, 'update']);
 $router->post('/admin/specialties/delete', [SpecialtyController::class, 'delete']);
+
+$router->get('/error/404', [ErrorController::class, 'error404']);
 
 $router->checkRoutes();
