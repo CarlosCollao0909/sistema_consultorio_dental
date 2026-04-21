@@ -126,6 +126,12 @@ class PaymentController {
         $dompdf->setPaper('letter', 'landscape');
         $dompdf->render();
 
+        // Prevent mobile browsers from caching the PDF
+        header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+        header('Cache-Control: post-check=0, pre-check=0', false);
+        header('Pragma: no-cache');
+        header('Expires: 0');
+
         $fileName = 'Recibo_' . preg_replace('/[^A-Za-z0-9_]/', '_', $treatment->treatment_name) . '_' . date('Ymd') . '.pdf';
         $dompdf->stream($fileName, ['Attachment' => false]);
         exit;
