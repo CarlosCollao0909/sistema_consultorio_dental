@@ -3,6 +3,8 @@
 use Dotenv\Dotenv;
 use Models\Database;
 
+define('APP_VERSION', '1.0.2');
+
 require __DIR__ . './../vendor/autoload.php';
 
 $dotenv = Dotenv::createImmutable(__DIR__);

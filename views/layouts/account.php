@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/build/css/main.css">
+    <link rel="stylesheet" href="/build/css/main.css?v=<?php echo APP_VERSION; ?>">
     <title>Consultorio Dental Perfect Dent - Login</title>
 </head>
 <body>
@@ -12,6 +12,6 @@
             <?php echo $content; ?>
         </div>
     </div>
-    <script src="/build/js/account.js"></script>
+    <script src="/build/js/account.js?v=<?php echo APP_VERSION; ?>"></script>
 </body>
 </html>
