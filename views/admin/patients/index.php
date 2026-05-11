@@ -1,6 +1,15 @@
 <h1 class="text-3xl font-bold tracking-tight text-slate-800">Pacientes Registrados</h1>
 
-<div class="my-6 flex justify-end">
+<div class="my-6 flex flex-wrap items-center justify-between gap-4">
+    <div class="relative w-full sm:w-80">
+        <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+        <input
+            type="text"
+            id="patientSearch"
+            placeholder="Buscar por nombre, teléfono o dirección..."
+            class="w-full rounded-lg border border-slate-300 bg-white py-2.5 pl-11 pr-4 text-slate-800 shadow-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+        >
+    </div>
     <a href="/admin/patients/create" class="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 font-semibold text-white shadow-md transition hover:bg-blue-700">
         <i class="fa-solid fa-circle-plus"></i>
         Nuevo Paciente
@@ -18,6 +27,7 @@
                         <th class="py-3 px-3 text-left lg:px-6">Nombre</th>
                         <th class="py-3 px-3 text-left lg:px-6">Teléfono</th>
                         <th class="py-3 px-3 text-left lg:px-6">Edad</th>
+                        <th class="hidden py-3 px-3 text-left lg:table-cell lg:px-6">Dirección</th>
                         <th class="hidden py-3 px-3 text-left lg:table-cell lg:px-6">Notas Médicas</th>
                         <th class="hidden py-3 px-3 text-left lg:table-cell lg:px-6">Alergias</th>
                         <th class="py-3 px-3 text-center lg:px-6">Acciones</th>
@@ -25,7 +35,7 @@
                 </thead>
                 <tbody class="text-sm text-slate-700">
                     <?php foreach ($patients as $patient): ?>
-                        <tr class="border-b border-slate-100 transition hover:bg-slate-50">
+                        <tr class="patient-row border-b border-slate-100 transition hover:bg-slate-50">
                             <td class="py-3 px-3 text-left whitespace-nowrap lg:px-6">
                                 <div class="flex items-center">
                                     <span class="font-semibold text-slate-800"><?php echo $patient->name . ' ' . $patient->last_name; ?></span>
@@ -36,6 +46,9 @@
                             </td>
                             <td class="py-3 px-3 text-left lg:px-6">
                                 <span><?php echo calculateAge($patient->birth_date) . ' años'; ?></span>
+                            </td>
+                            <td class="hidden py-3 px-3 text-left lg:table-cell lg:px-6">
+                                <span><?php echo $patient->address ?: 'N/A'; ?></span>
                             </td>
                             <td class="hidden py-3 px-3 text-left lg:table-cell lg:px-6">
                                 <span><?php echo $patient->medical_notes ?: 'N/A'; ?></span>
@@ -64,6 +77,9 @@
                             </td>
                         </tr>
                     <?php endforeach; ?>
+                    <tr id="noResultsRow" class="hidden">
+                        <td colspan="7" class="py-10 text-center text-lg text-gray-500">No se encontraron pacientes con ese criterio de búsqueda</td>
+                    </tr>
                 </tbody>
             </table>
         </div>

@@ -4,7 +4,7 @@ namespace Models;
 
 class Patient extends Database {
     protected static $table = 'patients';
-    protected static $columns = ['id', 'user_id', 'name', 'last_name', 'phone', 'birth_date', 'medical_notes', 'allergies', 'status'];
+    protected static $columns = ['id', 'user_id', 'name', 'last_name', 'phone', 'birth_date', 'address', 'medical_notes', 'allergies', 'status'];
 
     public $id;
     public $user_id;
@@ -12,6 +12,7 @@ class Patient extends Database {
     public $last_name;
     public $phone;
     public $birth_date;
+    public $address;
     public $medical_notes;
     public $allergies;
     public $status;
@@ -23,6 +24,7 @@ class Patient extends Database {
         $this->last_name = $args['last_name'] ?? '';
         $this->phone = $args['phone'] ?? '';
         $this->birth_date = $args['birth_date'] ?? '';
+        $this->address = $args['address'] ?? '';
         $this->medical_notes = $args['medical_notes'] ?? '';
         $this->allergies = $args['allergies'] ?? '';
         $this->status = $args['status'] ?? '1';

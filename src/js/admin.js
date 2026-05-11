@@ -103,6 +103,7 @@ const initializeAdmin = () => {
     showCalendar();
     initDashboard();
     initInputFormatting();
+    initPatientSearch();
 }
 
 // ==================== INPUT FORMATTING ====================
@@ -155,6 +156,34 @@ const initInputFormatting = () => {
                 }
             }
         });
+    });
+}
+
+// ==================== PATIENT SEARCH ====================
+const initPatientSearch = () => {
+    const searchInput = document.querySelector('#patientSearch');
+    const table = document.querySelector('#dataTable');
+
+    if (!searchInput || !table) return;
+
+    const rows = table.querySelectorAll('.patient-row');
+    const noResultsRow = document.querySelector('#noResultsRow');
+
+    searchInput.addEventListener('input', () => {
+        const query = searchInput.value.toLowerCase().trim();
+        let visibleCount = 0;
+
+        rows.forEach(row => {
+            const text = row.textContent.toLowerCase();
+            const matches = text.includes(query);
+            row.style.display = matches ? '' : 'none';
+            if (matches) visibleCount++;
+        });
+
+        if (noResultsRow) {
+            noResultsRow.style.display = visibleCount === 0 && query ? '' : 'none';
+            noResultsRow.classList.toggle('hidden', visibleCount > 0 || !query);
+        }
     });
 }
 

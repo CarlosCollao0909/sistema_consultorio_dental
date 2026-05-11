@@ -54,6 +54,19 @@
         </div>
 
         <div class="space-y-2 md:col-span-2">
+            <label for="address" class="block text-sm font-medium text-slate-700">Dirección</label>
+            <input
+                type="text"
+                name="address"
+                id="address"
+                data-format="sentencecase"
+                value="<?php echo sanitizeHTML($patient->address); ?>"
+                class="w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-slate-800 shadow-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+                placeholder="Dirección del paciente..."
+            >
+        </div>
+
+        <div class="space-y-2 md:col-span-2">
             <label for="medical_notes" class="block text-sm font-medium text-slate-700">Notas Médicas</label>
             <textarea
                 name="medical_notes"

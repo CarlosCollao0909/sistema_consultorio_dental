@@ -26,7 +26,7 @@ $appointmentStatusLabels = [
         <i class="fa-solid fa-user-circle mr-2 text-blue-600"></i>
         <?php echo sanitizeHTML($patient->name . ' ' . $patient->last_name); ?>
     </h1>
-    <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+    <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <div>
             <span class="text-xs font-semibold uppercase tracking-wide text-slate-500">Teléfono</span>
             <p class="mt-1 text-slate-800"><?php echo sanitizeHTML($patient->phone); ?></p>
@@ -34,6 +34,10 @@ $appointmentStatusLabels = [
         <div>
             <span class="text-xs font-semibold uppercase tracking-wide text-slate-500">Edad</span>
             <p class="mt-1 text-slate-800"><?php echo calculateAge($patient->birth_date); ?> años</p>
+        </div>
+        <div>
+            <span class="text-xs font-semibold uppercase tracking-wide text-slate-500">Dirección</span>
+            <p class="mt-1 text-slate-800"><?php echo sanitizeHTML($patient->address) ?: 'N/A'; ?></p>
         </div>
         <div>
             <span class="text-xs font-semibold uppercase tracking-wide text-slate-500">Notas Médicas</span>
