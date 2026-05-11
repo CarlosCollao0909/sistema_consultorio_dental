@@ -133,7 +133,7 @@ class PaymentController {
         header('Expires: 0');
 
         $fileName = 'Recibo_' . preg_replace('/[^A-Za-z0-9_]/', '_', $treatment->treatment_name) . '_' . date('Ymd') . '.pdf';
-        $dompdf->stream($fileName, ['Attachment' => false]);
+        $dompdf->stream($fileName, ['Attachment' => true]);
         exit;
     }
 }

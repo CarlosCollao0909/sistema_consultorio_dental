@@ -1,6 +1,7 @@
 <div class="mb-8 text-center">
     <i class="fa-solid fa-tooth text-blue-600 text-3xl font-extrabold"></i>
-    <h1 class="mb-2 inline-flex items-center gap-2 text-3xl font-bold tracking-tight text-slate-800">Consultorio Dental Perfect Dent</h1>
+    <h1 class="mb-2 inline-flex items-center gap-2 text-3xl font-bold tracking-tight text-slate-800">Perfect Dent</h1>
+    <h3 class="mb-2 items-center gap-2 text-2xl font-bold tracking-tight text-slate-800">Odontología Especializada</h3>
   <p class="text-slate-600">Inicia sesión con tu cuenta</p>
 </div>
 
